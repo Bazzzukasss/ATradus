@@ -1,0 +1,269 @@
+@startuml
+Enum NodeType {
+
+}
+
+Enum RequestType {
+	GET
+	PUT
+	POST
+	PATCH
+}
+
+struct ReplyData {
+	map<key, value> data
+}
+
+struct RequestData {
+	std::string data
+}
+
+struct Endpoint {
+	std::string data
+}
+
+abstract class IClientImpl {
+	+ {abstract} bool request(RequestType, Url, Endpoint, RequestData, Function<void(ReplyData)>)
+}
+
+abstract class IClient {
+	+ {abstract} bool request(IRequest)
+
+	-IClientImpl client
+}
+
+abstract class ICore {
+	+ {abstract} void sendRequest_n(...)	
+	+ {abstract} void processRequest_n(ReplyData)
+
+	-IClient client
+	-IRequestFactory factory
+}
+
+abstract class IMarketAPI {
+	+ {abstract} std::string get_1();
+	+ {abstract} std::string get_N();
+}
+
+abstract class IRequestFactory {
+	+ {abstract} IRequest createRequest(Args...)
+	- IMarketAPI api
+}
+
+abstract class IRequest {
+	+ {abstract} RequestType getRequestType()
+	+ {abstract} Url getUrl()
+	+ {abstract} EndPoint getEndPoint()	
+	+ {abstract} RequestData getRequestData()
+	+ {abstract} Function<void(ReplyData)> getHandler();
+}
+
+abstract class INodeModel {
+	+ {abstract} void request()
+	+ {abstract} void handler(ReplyData)
+
+	- ISettingModel settings
+	- ICore core
+	- bool isFinished
+}
+
+abstract class INodeView {
+	-INodeViewModel nodeViewModel
+}
+
+abstract class INodeViewModel {
+	-INodeModel nodeModel
+}
+
+abstract class IModelFactory {
+	+ {abstract} INodeModel createNodeModel(NodeType)
+	+ {abstract} IApplicationModel createApplicationModel()
+}
+
+abstract class IViewModelFactory {
+	+ {abstract} INodeViewModel createNodeViewModel(INodeModel)
+	+ {abstract} IApplicationViewModel createApplicationViewModel(IApplicationModel)
+}
+
+abstract class IViewFactory {
+	+ {abstract} INodeView createNodeView(INodeViewModel)
+	+ {abstract} IApplicationView createApplicationViewModel(IApplicationViewModel)
+}
+
+abstract class IApplicationModel {
+	-vector<INodeModel> nodeModels
+	-IModelFactory modelFactory
+}
+
+abstract class IApplicationViewModel {
+	-vector<INodeViewModel> nodeViewModels
+	-IApplicationModel applicationModel
+	-IViewModelFactory viewModelFactory
+}
+
+abstract class IApplicationView {
+	-vector<INodeView> nodeViews
+	-IApplicationViewModel applicationModel
+	-INodeViewFactory viewFactory
+}
+
+abstract class IBuilder {
+	+ {abstract} IModelFactory createModelFactory()
+	+ {abstract} IViewModelFactory createViewModelFactory()
+	+ {abstract} IViewFactory createViewFactory()	
+	+ {abstract} ICore createCore()
+	+ {abstract} IRequestFactory createRequestFactory()
+	+ {abstract} IMarketAPI createMarketAPI()
+	+ {abstract} IClient createClient()
+	+ {abstract} IClientImpl createClientImpl()
+}
+
+abstract class ISettingModel{
+
+}
+
+class Request {
+	- Function<void(ReplyData)> handler
+	- RequestType type
+	- Url url
+	- EndPoint endPoint
+	- RequestData requestData
+}
+
+class ClientImpl {
+}
+
+class Client{
+}
+
+class MarketAPI{
+}
+
+class RequestFactory {
+}
+
+class Core {
+}
+
+class Builder {	
+}
+
+class NodeModel {
+	void request()
+	void handler(ReplyData)
+}
+class NodeViewModel {
+}
+class NodeView {
+}
+
+class ApplicationModel {
+}
+class ApplicationViewModel {
+}
+class ApplicationView {
+}
+
+class ModelFactory {	
+}
+class ViewModelFactory {	
+}
+class ViewFactory {	
+}
+
+ApplicationModel -|> IApplicationModel
+ApplicationViewModel -|> IApplicationViewModel
+ApplicationView -|> IApplicationView
+
+NodeModel -|> INodeModel
+NodeViewModel -|> INodeViewModel
+NodeView -|> INodeView
+
+ModelFactory -|> IModelFactory
+ViewModelFactory -|> IViewModelFactory
+ViewFactory -|> IViewFactory
+
+MarketAPI -|> IMarketAPI
+Core -|> ICore
+RequestFactory -|> IRequestFactory
+
+Request -|> IRequest
+Builder -|> IBuilder
+ClientImpl -|> IClientImpl
+Client -|> IClient
+
+IClient *-- IClientImpl 
+IClient --> IRequest
+IRequest --> RequestData 
+IRequest --> Endpoint
+IRequest --> ReplyData
+IRequest --> RequestType
+
+IApplicationModel "1"*--"many" INodeModel
+IApplicationViewModel *-- IApplicationModel
+IApplicationView *-- IApplicationViewModel
+
+INodeModel o-- ICore
+INodeViewModel *-- INodeModel
+INodeView *-- INodeViewModel
+
+ICore o-- IClient
+ICore o-- IRequestFactory
+IRequestFactory --> IRequest
+IRequestFactory o-- IMarketAPI
+
+IModelFactory --> NodeType
+IModelFactory --> INodeModel
+IModelFactory --> IApplicationModel
+
+IViewModelFactory --> INodeViewModel
+IViewModelFactory --> IApplicationViewModel
+
+IViewFactory --> INodeView
+IViewFactory --> IApplicationView
+
+IBuilder --> IModelFactory
+IBuilder --> IViewModelFactory
+IBuilder --> IViewFactory
+IBuilder --> ICore
+IBuilder --> IRequestFactory
+IBuilder --> IClient
+IBuilder --> IClientImpl
+IBuilder --> IMarketAPI
+
+Client *-- ClientImpl 
+
+ApplicationModel "1"*--"many" NodeModel
+ApplicationViewModel *-- ApplicationModel
+ApplicationView *-- ApplicationViewModel
+
+NodeModel o-- Core
+NodeViewModel *-- NodeModel
+NodeView *-- NodeViewModel
+
+Core o-- Client
+Core o-- RequestFactory
+
+RequestFactory --> Request
+RequestFactory o-- MarketAPI
+
+ModelFactory --> NodeModel
+ModelFactory --> ApplicationModel
+
+ViewModelFactory --> NodeViewModel
+ViewModelFactory --> ApplicationViewModel
+
+ViewFactory --> NodeView
+ViewFactory --> ApplicationView
+
+Builder --> ModelFactory
+Builder --> ViewModelFactory
+Builder --> ViewFactory
+Builder --> Core
+Builder --> RequestFactory
+Builder --> Client
+Builder --> ClientImpl
+Builder --> MarketAPI
+
+
+@enduml

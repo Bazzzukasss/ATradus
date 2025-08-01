@@ -1,0 +1,40 @@
+@startuml
+
+component TradeMarket [
+Trade Market
+]
+
+frame "ATradus Application" {
+	frame "Core <static lib>" {
+		component ICore[
+			ICore
+		]
+		component IClient[
+			IClient
+		]
+	}
+
+	frame "Terminal  <static lib>" {
+		component IModel [
+			IModel
+		]
+		component IView [
+			IView
+		]
+		component IViewModel [
+			IViewModel
+		]
+	}
+
+	component Application [
+		Application
+	]
+}
+
+ICore <-> IClient
+IClient <-> TradeMarket
+IModel <-> IViewModel
+IViewModel <-> IView
+
+
+@enduml

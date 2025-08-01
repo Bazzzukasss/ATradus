@@ -1,0 +1,337 @@
+@startuml
+
+abstract class ISettingModel
+{
+	+ {abstract} void rw()
+}
+
+class SettingModel
+{
+	+ T value
+	+ T default
+
+	+ void rw()
+}
+
+class NumberSettingModel
+{
+	+ T min
+	+ T max
+	+ T step
+
+	+ void rw()
+}
+
+class ListSettingModel
+{
+	+ List<T> list
+
+	+ void rw()
+}
+
+SettingModel -|> ISettingModel
+
+NumberSettingModel -|> SettingModel
+ListSettingModel -|> SettingModel
+ArraySettingModel -|> SettingModel
+
+StringSettingModel -|> SettingModel
+IntNumberSettingModel -|> NumberSettingModel
+DoubleNumberSettingModel -|> NumberSettingModel
+
+EnumSettingModel -|> ListSettingModel
+StringListSettingModel -|> ListSettingModel
+IntListSettingModel -|> ListSettingModel
+DoubleListSettingModel -|> ListSettingModel
+
+StringArraySettingModel -|> ArraySettingModel
+IntArraySettingModel -|> ArraySettingModel
+DoubleArraySettingModel -|> ArraySettingModel
+
+
+abstract class ISettingViewModel {
+	signal valueChanged()
+	signal defaultChanged()
+	signal minChanged()
+	signal maxChanged()
+	signal decimalChanged()
+	signal suffixChanged()
+	signal stepChanged()
+	signal listChanged()
+
+	+ {abstract} void emitValueChanged()
+	+ {abstract} void emitDefaultChanged()
+	+ {abstract} void emitMinChanged()
+	+ {abstract} void emitMaxChanged()
+	+ {abstract} void emitDecimalChanged()
+	+ {abstract} void emitSuffixChanged()
+	+ {abstract} void emitStepChanged()
+	+ {abstract} void emitListChanged()
+}
+
+class SettingViewModel
+{
+	+ void setValue(M::Type)
+	+ M::Type getValue() const
+
+	+ void setDefault(M::Type)
+	+ M::Type getDefault() const
+
+	+ void emitValueChanged()
+	+ void emitDefaultChanged()
+
+	- M* model
+}
+
+class NumberSettingViewModel
+{
+	+ void setMin(M::Type)
+	+ M::Type getMin() const
+
+	+ void setMax(M::Type)
+	+ M::Type getMax() const
+
+	+ void setStep(M::Type)
+	+ M::Type getStep() const
+
+	+ void setDecimal(M::Type)
+	+ M::Type getDecimal() const
+
+	+ void setSuffix(M::Type)
+	+ M::Type getSuffix() const
+
+	+ void emitMinChanged()
+	+ void emitMaxChanged()
+	+ void emitStepChanged()	
+	+ void emitDecimalChanged()
+	+ void emitSuffixChanged()
+
+	- M* model
+}
+
+class ListSettingViewModel
+{
+	+ void setList(M::Type)
+	+ M::Type getList() const
+
+	+ void emitListChanged()
+
+	- M* model
+}
+
+SettingViewModel -|> ISettingViewModel
+
+NumberSettingViewModel -|> SettingViewModel
+ListSettingViewModel -|> SettingViewModel
+ArraySettingViewModel -|> SettingViewModel
+
+StringSettingViewModel -|> SettingViewModel
+IntNumberSettingViewModel -|> NumberSettingViewModel
+DoubleNumberSettingViewModel -|> NumberSettingViewModel
+
+EnumSettingViewModel -|> ListSettingViewModel
+StringListSettingViewModel -|> ListSettingViewModel
+IntListSettingViewModel -|> ListSettingViewModel
+DoubleListSettingViewModel -|> ListSettingViewModel
+
+StringArraySettingViewModel -|> ArraySettingViewModel
+IntArraySettingViewModel -|> ArraySettingViewModel
+DoubleArraySettingViewModel -|> ArraySettingViewModel
+
+
+ISettingViewModel o-- ISettingModel
+SettingViewModel o-- SettingModel
+
+NumberSettingViewModel o-- NumberSettingModel
+ListSettingViewModel o-- ListSettingModel
+ArraySettingViewModel o-- ArraySettingModel
+
+EnumSettingViewModel o-- EnumSettingModel
+StringSettingViewModel o-- StringSettingModel
+IntNumberSettingViewModel o-- IntNumberSettingModel
+DoubleNumberSettingViewModel o-- DoubleNumberSettingModel
+
+StringListSettingViewModel o-- StringListSettingModel
+IntListSettingViewModel o-- IntListSettingModel
+DoubleListSettingViewModel o-- DoubleListSettingModel
+
+StringArraySettingViewModel o-- StringArraySettingModel
+IntArraySettingViewModel o-- IntArraySettingModel
+DoubleArraySettingViewModel o-- DoubleArraySettingModel
+
+
+class EnumSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-EnumSettingViewModel* viewModel;
+}
+
+class StringSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-StringSettingViewModel* viewModel;
+}
+
+class IntNumberSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-IntNumberSettingViewModel* viewModel;
+}
+
+class DoubleNumberSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-DoubleNumberSettingViewModel* viewModel;
+}
+
+class StringListSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-StringListSettingViewModel* viewModel;
+}
+
+class IntListSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-IntListSettingViewModel* viewModel;
+}
+
+class DoubleListSettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-DoubleListSettingViewModel* viewModel;
+}
+
+class StringArraySettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-StringArraySettingViewModel* viewModel;
+}
+
+class IntArraySettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-IntArraySettingViewModel* viewModel;
+}
+
+class DoubleArraySettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-DoubleArraySettingViewModel* viewModel;
+}
+
+StringSettingView -|> QLineEdit
+IntNumberSettingView -|> QSpinBox
+DoubleNumberSettingView -|> QDoubleSpinBox
+
+EnumSettingView -|> QComboBox
+StringListSettingView -|> QComboBox
+IntListSettingView -|> QComboBox
+DoubleListSettingView -|> QComboBox
+
+StringArraySettingView -|> QListWidget
+IntArraySettingView -|> QListWidget
+DoubleArraySettingView -|> QListWidget
+
+
+StringSettingView o-- StringSettingViewModel
+IntNumberSettingView o-- IntNumberSettingViewModel
+DoubleNumberSettingView o-- DoubleNumberSettingViewModel
+
+EnumSettingView o-- EnumSettingViewModel
+StringListSettingView o-- StringListSettingViewModel
+IntListSettingView o-- IntListSettingViewModel
+DoubleListSettingView o-- DoubleListSettingViewModel
+
+StringArraySettingView o-- StringArraySettingViewModel
+IntArraySettingView o-- IntArraySettingViewModel
+DoubleArraySettingView o-- DoubleArraySettingViewModel
+
+
+class SettingView {
+	+ void setViewModel(viewModel)
+	- void onValueChanged()
+	- void connect()
+
+	-ISettingViewModel* viewModel;
+}
+
+SettingView -|> QWidget
+
+SettingView o-- StringSettingView
+SettingView o-- IntNumberSettingView
+SettingView o-- DoubleNumberSettingView
+
+SettingView o-- EnumSettingView
+SettingView o-- StringListSettingView
+SettingView o-- IntListSettingView
+SettingView o-- DoubleListSettingView
+
+SettingView o-- StringArraySettingView
+SettingView o-- IntArraySettingView
+SettingView o-- DoubleArraySettingView
+
+
+SettingView o-- StringSettingViewModel
+SettingView o-- IntNumberSettingViewModel
+SettingView o-- DoubleNumberSettingViewModel
+
+SettingView o-- EnumSettingViewModel
+SettingView o-- StringListSettingViewModel
+SettingView o-- IntListSettingViewModel
+SettingView o-- DoubleListSettingViewModel
+
+SettingView o-- StringArraySettingViewModel
+SettingView o-- IntArraySettingViewModel
+SettingView o-- DoubleArraySettingViewModel
+
+
+class SettingItemModel {
+	ISettingModel* model
+
+	vector<SettingItem*> items
+}
+
+class SettingItemViewModel
+{
+	SettingItemModel* getModel() const
+
+	- SettingItemModel* model
+}
+
+class SettingItemView
+{
+	void setItemViewModel(viewModel)
+
+	-SettingItemViewModel* viewModel
+}
+
+SettingItemView -|> QTreeWidget
+
+SettingItem o-- ISettingModel
+SettingItemViewModel o-- SettingItemModel
+SettingItemView o-- SettingItemViewModel
+
+SettingItemView *--SettingView
+
+@enduml
