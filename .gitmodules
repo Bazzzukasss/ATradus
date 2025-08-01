@@ -1,0 +1,9 @@
+[submodule "AppSettingsLib"]
+	path = AppSettingsLib
+	url = ../AppSettingsLib.git
+[submodule "RequesterLib"]
+	path = RequesterLib
+	url = ../RequesterLib.git
+[submodule "SerializerLib"]
+	path = SerializerLib
+	url = ../SerializerLib.git
