@@ -6,18 +6,31 @@ CONFIG += c++17
 DESTDIR = ../bin
 
 HEADERS += \
+    src/interface/IApplicationView.h \
+    src/interface/INodeView.h \
+    src/interface/IViewFactory.h \
+    src/model/ApplicationModel.h \
+    src/model/ArbitageNodeModel.h \
+    src/service/ModelFactory.h \
+    src/common/Common.h \
+    src/interface/IApplicationModel.h \
+    src/interface/IModelFactory.h \
+    src/interface/INodeModel.h \
+    src/view/ApplicationView.h \
+    src/view/ArbitrageNodeView.h
 
 SOURCES += \
-    src/main.cpp
+    src/model/ApplicationModel.cpp \
+    src/model/ArbitageNodeModel.cpp \
+    src/service/ModelFactory.cpp \
+    src/main.cpp \
+    src/view/ApplicationView.cpp \
+    src/view/ArbitrageNodeView.cpp
 
 INCLUDEPATH += \
-    $$PWD/../AppSettingsLib/src \
-    $$PWD/../SerializerLib/src \
-    $$PWD/../RequesterLib/src \
-    $$PWD/../RequesterLib/src/common \
-    $$PWD/../RequesterLib/src/interfaces \
-    $$PWD/../RequesterLib/src/binance \
-    $$PWD/../RequesterLib/src/client
+    $$PWD/../AppSettingsLib \
+    $$PWD/../SerializerLib \
+    $$PWD/../RequesterLib
 
 LIBS *= -L$$OUT_PWD/$$DESTDIR -lRequesterLib -lAppSettingsLib -lSerializerLib
 
