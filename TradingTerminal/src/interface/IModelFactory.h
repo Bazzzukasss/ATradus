@@ -9,10 +9,11 @@ namespace atradus
 
 class INodeModel;
 class IApplicationModel;
+class INodeListModel;
+class IArbitrageNodeModel;
 
 class IModelFactory : public QObject
 {
-    Q_OBJECT
 public:
     IModelFactory(QObject* parent = nullptr)
         : QObject(parent)
@@ -20,8 +21,10 @@ public:
 
     virtual ~IModelFactory() = default;
 
-    virtual INodeModel* createNodeModel(const NodeType& nodeType, const MarketType& marketType) = 0;
-    virtual IApplicationModel* createApplicationModel() = 0;
+    virtual INodeModel* createNodeModel(const NodeType& nodeType, const MarketType& marketType, QObject* parent = nullptr) = 0;
+    virtual IApplicationModel* createApplicationModel(QObject* parent = nullptr) = 0;
+    virtual INodeListModel* createNodeListModel(QObject* parent = nullptr) = 0;
+    virtual IArbitrageNodeModel* createArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) = 0;
 };
 
 } //namespace atradus

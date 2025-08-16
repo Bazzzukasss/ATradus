@@ -1,17 +1,16 @@
 #ifndef IAPPLICATIONVIEW_H
 #define IAPPLICATIONVIEW_H
 
-#include <QObject>
+#include <QWidget>
 
 namespace atradus
 {
 
-class IApplicationView : public QObject
+class IApplicationView : public QWidget
 {
-    Q_OBJECT
 public:
-    IApplicationView(QObject* parent = nullptr)
-        : QObject(parent)
+    IApplicationView(QWidget* parent = nullptr)
+        : QWidget(parent)
     {
     }
 

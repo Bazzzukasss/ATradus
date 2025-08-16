@@ -1,15 +1,21 @@
 #ifndef ARBITRAGENODEVIEW_H
 #define ARBITRAGENODEVIEW_H
 
-#include "src/interface/INodeView.h"
+#include "src/interface/IArbitrageNodeView.h"
 
 namespace atradus
 {
 
-class ArbitrageNodeView : public INodeView
+class IArbitrageNodeModel;
+
+class ArbitrageNodeView : public IArbitrageNodeView
 {
+    Q_OBJECT
 public:
-    ArbitrageNodeView(QObject* parent = nullptr);
+    ArbitrageNodeView(IArbitrageNodeModel* model, QWidget* parent = nullptr);
+
+private:
+    IArbitrageNodeModel* m_model{nullptr};
 };
 
 } // namespace atradus

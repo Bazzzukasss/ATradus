@@ -1,17 +1,16 @@
 #ifndef INODEVIEW_H
 #define INODEVIEW_H
 
-#include <QObject>
+#include <QWidget>
 
 namespace atradus
 {
 
-class INodeView : public QObject
+class INodeView : public QWidget
 {
-    Q_OBJECT
 public:
-    INodeView(QObject* parent = nullptr)
-        : QObject(parent)
+    INodeView(QWidget* parent = nullptr)
+        : QWidget(parent)
     {
     }
 

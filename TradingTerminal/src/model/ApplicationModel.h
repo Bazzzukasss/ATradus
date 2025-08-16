@@ -7,6 +7,8 @@ namespace atradus
 {
 
 class INodeModel;
+class IModelFactory;
+class INodeListModel;
 
 class ApplicationModel : public IApplicationModel
 {
@@ -14,8 +16,16 @@ class ApplicationModel : public IApplicationModel
 public:
     ApplicationModel(QObject* parent = nullptr);
 
+    void addNode(const NodeType& nodeType, const MarketType& marketType) override;
+    INodeListModel* nodeListModel() const override;
+
 private:
-    QVector<INodeModel*> m_nodes;
+    void addNode(INodeModel* nodeModel);
+    void removeNode(INodeModel* nodeModel);
+
+private:
+    INodeListModel* m_nodeListModel;
+    IModelFactory* m_factory;
 };
 
 } // namespace atradus

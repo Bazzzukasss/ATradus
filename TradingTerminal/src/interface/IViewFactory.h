@@ -11,10 +11,13 @@ class INodeView;
 class INodeModel;
 class IApplicationView;
 class IApplicationModel;
+class INodeListView;
+class INodeListModel;
+class IArbitrageNodeModel;
+class IArbitrageNodeView;
 
 class IViewFactory : public QObject
 {
-    Q_OBJECT
 public:
     IViewFactory(QObject* parent = nullptr)
         : QObject(parent)
@@ -22,8 +25,10 @@ public:
 
     virtual ~IViewFactory() = default;
 
-    virtual INodeView* createNodeView(const NodeType& nodeType, INodeModel* model) = 0;
-    virtual IApplicationView* createApplicationView(IApplicationModel* model) = 0;
+    virtual INodeView* createNodeView(INodeModel* model, QWidget* parent) = 0;
+    virtual IApplicationView* createApplicationView(IApplicationModel* model, QWidget* parent) = 0;
+    virtual INodeListView* createNodeListView(INodeListModel* model, QWidget* parent) = 0;
+    virtual IArbitrageNodeView* createArbitrageNodeView(IArbitrageNodeModel* model, QWidget* parent) = 0;
 };
 
 } //namespace atradus

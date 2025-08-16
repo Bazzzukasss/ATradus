@@ -1,10 +1,11 @@
-#include "ArbitrageNodeView.h"
+#include "src/view/ArbitrageNodeView.h"
 
 namespace atradus
 {
 
-ArbitrageNodeView::ArbitrageNodeView(QObject* parent)
-    : INodeView(parent)
+ArbitrageNodeView::ArbitrageNodeView(IArbitrageNodeModel* model, QWidget* parent)
+    : IArbitrageNodeView(parent)
+    , m_model(model)
 {}
 
 }
