@@ -20,10 +20,11 @@ public:
     ArbitageNodeModel(std::unique_ptr<rqs::IRequester> requester,
                       QObject* parent = nullptr);
 
-    void run() override;
     NodeType type() const override;
     const QStringList& info() const override;
     bool isActive() const override;
+    void switchState() override;
+    void run() override;
     void start() override;
     void stop() override;
 

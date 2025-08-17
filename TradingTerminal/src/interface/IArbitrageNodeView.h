@@ -8,6 +8,7 @@ namespace atradus
 
 class IArbitrageNodeView : public QWidget
 {
+    Q_OBJECT
 public:
     IArbitrageNodeView(QWidget* parent = nullptr)
         : QWidget(parent)

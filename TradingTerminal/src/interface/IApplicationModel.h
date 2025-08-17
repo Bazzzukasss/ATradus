@@ -8,6 +8,7 @@ namespace atradus
 {
 
 class INodeListModel;
+class INodeModel;
 
 class IApplicationModel : public QObject
 {
@@ -17,7 +18,7 @@ public:
     {
     }
 
-    virtual void addNode(const NodeType& nodeType, const MarketType& marketType) = 0;
+    virtual INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) = 0;
     virtual INodeListModel* nodeListModel() const = 0;
 
     virtual ~IApplicationModel() = default;

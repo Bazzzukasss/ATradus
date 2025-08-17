@@ -13,10 +13,12 @@ ApplicationModel::ApplicationModel(QObject* parent)
     m_nodeListModel = m_factory->createNodeListModel();
 }
 
-void ApplicationModel::addNode(const NodeType& nodeType, const MarketType& marketType)
+INodeModel* ApplicationModel::addNode(const NodeType& nodeType, const MarketType& marketType)
 {
     auto nodeModel = m_factory->createNodeModel(nodeType, marketType);
     addNode(nodeModel);
+
+    return nodeModel;
 }
 
 INodeListModel* ApplicationModel::nodeListModel() const

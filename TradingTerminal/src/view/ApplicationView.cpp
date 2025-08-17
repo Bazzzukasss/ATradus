@@ -1,7 +1,6 @@
 #include "src/view/ApplicationView.h"
 #include "src/view/NodeView.h"
 #include "src/view/NodeListView.h"
-
 #include "src/interface/IApplicationModel.h"
 #include "src/interface/IViewFactory.h"
 
@@ -27,7 +26,8 @@ ApplicationView::ApplicationView(IApplicationModel* model, IViewFactory* factory
     mainlayout->addWidget(m_nodeListView, 1);
     setLayout(mainlayout);
 
-    model->addNode(NodeType::Arbitrage, MarketType::Binance);
+    auto nodeModel = model->addNode(NodeType::Arbitrage, MarketType::Binance);
+    m_nodeView->resetModel(nodeModel);
 }
 
 } // namespace atradus

@@ -1,5 +1,6 @@
 #include "ArbitageNodeModel.h"
 #include "../RequesterLib/src/interface/IRequester.h"
+#include <QDebug>
 
 namespace atradus
 {
@@ -15,7 +16,7 @@ ArbitageNodeModel::ArbitageNodeModel(std::unique_ptr<rqs::IRequester> requester,
 void atradus::ArbitageNodeModel::run()
 {
     static int i{0};
-    QString info{"Request: " + QString::number(i)};
+    QString info{"Request: " + QString::number(i++)};
     toLog(info);
 }
 
@@ -63,16 +64,28 @@ const QStringList& ArbitageNodeModel::log() const
     return m_log;
 }
 
-void ArbitageNodeModel::toLog(const QString &info)
+void ArbitageNodeModel::toLog(const QString& info)
 {
     m_log << info;
-
+    qDebug() << info;
     emit logChanged(m_log);
 }
 
 bool ArbitageNodeModel::isActive() const
 {
     return m_isActive;
+}
+
+void ArbitageNodeModel::switchState()
+{
+    if(m_isActive)
+    {
+        stop();
+    }
+    else
+    {
+        start();
+    }
 }
 
 void ArbitageNodeModel::setIsActive(bool isActive)

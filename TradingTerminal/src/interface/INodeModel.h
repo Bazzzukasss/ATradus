@@ -21,6 +21,7 @@ public:
     virtual NodeType type() const = 0;
     virtual const QStringList& info() const = 0;
     virtual bool isActive() const = 0;
+    virtual void switchState() = 0;
     virtual void run() = 0;
     virtual void start() = 0;
     virtual void stop() = 0;

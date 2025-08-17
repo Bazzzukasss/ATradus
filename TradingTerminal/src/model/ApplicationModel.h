@@ -16,7 +16,7 @@ class ApplicationModel : public IApplicationModel
 public:
     ApplicationModel(QObject* parent = nullptr);
 
-    void addNode(const NodeType& nodeType, const MarketType& marketType) override;
+    INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) override;
     INodeListModel* nodeListModel() const override;
 
 private:

@@ -3,6 +3,8 @@
 
 #include "src/interface/IArbitrageNodeView.h"
 
+class QTextEdit;
+
 namespace atradus
 {
 
@@ -14,8 +16,15 @@ class ArbitrageNodeView : public IArbitrageNodeView
 public:
     ArbitrageNodeView(IArbitrageNodeModel* model, QWidget* parent = nullptr);
 
+    void setModel(IArbitrageNodeModel* model);
+
+private:
+    void initialize();
+    void onLogChanged(const QStringList& list);
+
 private:
     IArbitrageNodeModel* m_model{nullptr};
+    QTextEdit* m_textEdit;
 };
 
 } // namespace atradus
