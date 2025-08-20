@@ -8,15 +8,22 @@
 
 namespace atradus
 {
-
-const rqs::CurrencyTrinity SOLBTC{{rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
-                                  {rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
+const rqs::MarketAccount BinanceTestAccount{"https://testnet.binance.vision", "", "", 0.075};
+const rqs::CurrencyTrinity SOLBTC{{rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
+                                  {rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
                                   {rqs::CurrencyType::SOL, rqs::CurrencyType::BTC}};
 
-const rqs::CurrencyTrinity ETHBTC{{rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
-                                  {rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
+const rqs::CurrencyTrinity ETHBTC{{rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
+                                  {rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
                                   {rqs::CurrencyType::ETH, rqs::CurrencyType::BTC}};
 
+const rqs::CurrencyTrinity LINKETH{{rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
+                                   {rqs::CurrencyType::LINK, rqs::CurrencyType::USDT},
+                                   {rqs::CurrencyType::LINK, rqs::CurrencyType::ETH}};
+
+const rqs::CurrencyTrinity LINKBTC{{rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
+                                   {rqs::CurrencyType::LINK, rqs::CurrencyType::USDT},
+                                   {rqs::CurrencyType::LINK, rqs::CurrencyType::BTC}};
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -25,7 +32,7 @@ MainWindow::MainWindow(QWidget* parent)
     auto modelFactory = new ModelFactory(std::move(builder), this);
 
     auto appModel = modelFactory->createApplicationModel(this);
-    appModel->addArbitrageNode(MarketType::Binance, {SOLBTC, ETHBTC});
+    appModel->addArbitrageNode(MarketType::Binance, {LINKBTC});
 
     auto appView = viewFactory->createApplicationView(appModel, this);
 
@@ -38,6 +45,8 @@ MainWindow::MainWindow(QWidget* parent)
     mainLayout->addWidget(appView);
 
     appModel->selectNode(0);
+    appModel->setMarketAccount(BinanceTestAccount);
+    setMinimumSize({1200, 800});
 }
 
 } // namespace atradus

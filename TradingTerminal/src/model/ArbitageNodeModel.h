@@ -30,6 +30,7 @@ public:
 
     const QStringList& log() const override;
     void setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies) override;
+    void setMarketAccount(const rqs::MarketAccount& account) override;
 
 protected:
     void timerEvent(QTimerEvent* event) override;
@@ -47,6 +48,7 @@ private:
     QStringList m_log;
     bool m_isActive{false};
     QVector<rqs::CurrencyTrinity> m_requestedCurrencies;
+    rqs::MarketAccount m_account;
 };
 
 } //namespace atradus

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "src/common/Common.h"
+#include "../RequesterLib/src/common/Common.h"
 
 namespace atradus
 {
@@ -18,6 +19,7 @@ public:
 
     virtual ~INodeModel() = default;
 
+    virtual void setMarketAccount(const rqs::MarketAccount& account) = 0;
     virtual NodeType type() const = 0;
     virtual const QStringList& info() const = 0;
     virtual bool isActive() const = 0;

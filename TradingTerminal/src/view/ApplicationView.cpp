@@ -29,7 +29,7 @@ ApplicationView::ApplicationView(IApplicationModel* model,
     mainlayout->addWidget(m_nodeListView, 1);
     setLayout(mainlayout);
 
-    connect(model, &IApplicationModel::nodeSelected,
+    connect(model, &IApplicationModel::selectedNodeChanged,
             this, &ApplicationView::onNodeSelected);
 
     connect(m_nodeListView->selectionModel(), &QItemSelectionModel::currentRowChanged,

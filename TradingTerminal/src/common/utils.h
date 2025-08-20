@@ -12,6 +12,7 @@ namespace utils
 {
 
 std::string toString(const NodeType& nodeType);
+double calculateCurrencyVolume(double price_usdt, double volume_usdt, double commision_prs);
 
 } //namspace utils
 } //namspace atradus

@@ -41,11 +41,32 @@ void ApplicationModel::selectNode(int i)
 {
     auto nodeModel = m_nodeListModel->getNode(i);
 
-    emit nodeSelected(nodeModel);
+    if(m_selectedNode != nodeModel)
+    {
+        m_selectedNode = nodeModel;
+        emit selectedNodeChanged(m_selectedNode);
+    }
+}
+
+INodeModel* ApplicationModel::selectedNode() const
+{
+    return m_selectedNode;
+}
+
+void ApplicationModel::setMarketAccount(const rqs::MarketAccount& account)
+{
+    m_account = account;
+
+    for(int i = 0 ; i < m_nodeListModel->rowCount(); ++i)
+    {
+        auto nodeModel = m_nodeListModel->getNode(i);
+        nodeModel->setMarketAccount(account);
+    }
 }
 
 void ApplicationModel::addNode(INodeModel* nodeModel)
 {
+    nodeModel->setMarketAccount(m_account);
     m_nodeListModel->addNode(nodeModel);
 }
 

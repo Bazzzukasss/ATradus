@@ -26,10 +26,12 @@ public:
     virtual IArbitrageNodeModel* addArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies = {}) = 0;
     virtual INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) = 0;
     virtual INodeListModel* nodeListModel() const = 0;
+    virtual void setMarketAccount(const rqs::MarketAccount& account) = 0;
     virtual void selectNode(int i) = 0;
+    virtual INodeModel* selectedNode() const = 0;
 
 signals:
-    void nodeSelected(INodeModel* nodeModel);
+    void selectedNodeChanged(INodeModel* nodeModel);
 };
 
 } // namespace atradus

@@ -21,6 +21,8 @@ bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
 {
     static int i{0};
     QString info;
+    double volume_usdt{1000};
+    double price_c1_cb, price_c2_cb, price_c2_c1;
 
     info = QString("%1)").arg(i);
     for(const auto& [curPair, price] : prices)
@@ -30,7 +32,30 @@ bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
                     .arg(rqs::utils::toString(curPair.second))
                     .arg(price);
 
+        if (curPair == currencyTrinity.c1_cb)
+        {
+            price_c1_cb = price;
+        }
+        else if (curPair == currencyTrinity.c2_cb)
+        {
+            price_c2_cb = price;
+        }
+        else if (curPair == currencyTrinity.c2_c1)
+        {
+            price_c2_c1 = price;
+        }
     }
+
+    auto volume_c1 = utils::calculateCurrencyVolume(price_c1_cb, volume_usdt, m_account.commision_prs);
+    auto volume_c2 = utils::calculateCurrencyVolume(price_c2_c1, volume_c1, m_account.commision_prs);
+    auto volume_cb = utils::calculateCurrencyVolume(1.0 / price_c2_cb, volume_c2, m_account.commision_prs);
+    auto delta = volume_cb - volume_usdt;
+
+    info += QString("\tRESULT = %1, %2, %3\t%4")
+                .arg(volume_c1)
+                .arg(volume_c2)
+                .arg(volume_cb)
+                .arg(delta);
 
     toLog(info);
     i++;
@@ -45,7 +70,7 @@ void ArbitageNodeModel::run()
         m_requester->requestPrices({
                                     currencyTrinity.c1_cb,
                                     currencyTrinity.c2_cb,
-                                    currencyTrinity.c1_c2
+                                    currencyTrinity.c2_c1
                                    },
                                 [=](const std::map<rqs::CurrencyPair, double>& prices){
                                        process(currencyTrinity, prices);
@@ -103,10 +128,16 @@ void ArbitageNodeModel::setRequestedCurrencies(const QVector<rqs::CurrencyTrinit
     m_requestedCurrencies = currencies;
 }
 
+void ArbitageNodeModel::setMarketAccount(const rqs::MarketAccount& account)
+{
+    m_account = account;
+    m_requester->setMarketAccount(account);
+}
+
 void ArbitageNodeModel::toLog(const QString& info)
 {
     m_log << info;
-    qDebug() << info;
+
     emit logChanged(m_log);
     emit logUpdated(info);
 }
