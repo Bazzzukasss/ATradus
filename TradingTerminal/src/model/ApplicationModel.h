@@ -9,15 +9,18 @@ namespace atradus
 class INodeModel;
 class IModelFactory;
 class INodeListModel;
+class IArbitrageNodeModel;
 
 class ApplicationModel : public IApplicationModel
 {
     Q_OBJECT
 public:
-    ApplicationModel(QObject* parent = nullptr);
+    ApplicationModel(IModelFactory* factory, QObject* parent = nullptr);
 
+    IArbitrageNodeModel* addArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies) override;
     INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) override;
     INodeListModel* nodeListModel() const override;
+    void selectNode(int i) override;
 
 private:
     void addNode(INodeModel* nodeModel);

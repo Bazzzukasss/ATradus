@@ -2,6 +2,7 @@
 #include "src/view/NodeView.h"
 #include "src/view/NodeListView.h"
 #include "src/interface/IApplicationModel.h"
+#include "src/interface/INodeListModel.h"
 #include "src/interface/IViewFactory.h"
 
 #include <QVBoxLayout>
@@ -10,7 +11,9 @@
 namespace atradus
 {
 
-ApplicationView::ApplicationView(IApplicationModel* model, IViewFactory* factory, QWidget* parent)
+ApplicationView::ApplicationView(IApplicationModel* model,
+                                 IViewFactory* factory,
+                                 QWidget* parent)
     : IApplicationView(parent)
     , m_model(model)
     , m_factory(factory)
@@ -26,7 +29,17 @@ ApplicationView::ApplicationView(IApplicationModel* model, IViewFactory* factory
     mainlayout->addWidget(m_nodeListView, 1);
     setLayout(mainlayout);
 
-    auto nodeModel = model->addNode(NodeType::Arbitrage, MarketType::Binance);
+    connect(model, &IApplicationModel::nodeSelected,
+            this, &ApplicationView::onNodeSelected);
+
+    connect(m_nodeListView->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, [=](const QModelIndex& current, const QModelIndex& previous){
+        model->selectNode(current.row());
+    });
+}
+
+void ApplicationView::onNodeSelected(INodeModel* nodeModel)
+{
     m_nodeView->resetModel(nodeModel);
 }
 

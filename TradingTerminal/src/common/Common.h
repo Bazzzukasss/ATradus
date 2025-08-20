@@ -1,5 +1,5 @@
-#ifndef ATRADUS_COMMON_H
-#define ATRADUS_COMMON_H
+#ifndef TRADINGTERMINAL_COMMON_H
+#define TRADINGTERMINAL_COMMON_H
 
 namespace atradus
 {

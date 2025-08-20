@@ -2,6 +2,7 @@
 #include "src/interface/IArbitrageNodeModel.h"
 #include <QTextEdit>
 #include <QVBoxLayout>
+#include <QScrollBar>
 
 namespace atradus
 {
@@ -36,8 +37,8 @@ void ArbitrageNodeView::setModel(IArbitrageNodeModel* model)
 
 void ArbitrageNodeView::initialize()
 {
-    connect(m_model, &IArbitrageNodeModel::logChanged,
-            this, &ArbitrageNodeView::onLogChanged);
+    connect(m_model, &IArbitrageNodeModel::logUpdated,
+            this, &ArbitrageNodeView::onLogUpdated);
 
     onLogChanged(m_model->log());
 }
@@ -51,6 +52,13 @@ void ArbitrageNodeView::onLogChanged(const QStringList& list)
     }
 
     m_textEdit->setText(text);
+    m_textEdit->verticalScrollBar()->setValue(m_textEdit->verticalScrollBar()->maximum());
+}
+
+void ArbitrageNodeView::onLogUpdated(const QString& info)
+{
+    m_textEdit->append(info);
+    m_textEdit->verticalScrollBar()->setValue(m_textEdit->verticalScrollBar()->maximum());
 }
 
 }

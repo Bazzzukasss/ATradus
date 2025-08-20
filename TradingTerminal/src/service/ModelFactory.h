@@ -17,7 +17,7 @@ class ModelFactory : public IModelFactory
 {
     Q_OBJECT
 public:
-    ModelFactory(QObject* parent = nullptr);
+    ModelFactory(std::unique_ptr<rqs::IBuilder> builder, QObject* parent = nullptr);
 
     INodeModel* createNodeModel(const NodeType& nodeType, const MarketType& marketType, QObject* parent = nullptr) override;
     IApplicationModel* createApplicationModel(QObject* parent = nullptr) override;

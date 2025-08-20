@@ -7,6 +7,7 @@ DESTDIR = ../bin
 
 HEADERS += \
     src/MainWindow.h \
+    src/common/Utils.h \
     src/interface/IApplicationView.h \
     src/interface/IArbitrageNodeModel.h \
     src/interface/IArbitrageNodeView.h \
@@ -30,6 +31,7 @@ HEADERS += \
 
 SOURCES += \
     src/MainWindow.cpp \
+    src/common/Utils.cpp \
     src/model/ApplicationModel.cpp \
     src/model/ArbitageNodeModel.cpp \
     src/model/NodeListModel.cpp \

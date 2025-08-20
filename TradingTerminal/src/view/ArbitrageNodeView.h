@@ -21,6 +21,7 @@ public:
 private:
     void initialize();
     void onLogChanged(const QStringList& list);
+    void onLogUpdated(const QString& info);
 
 private:
     IArbitrageNodeModel* m_model{nullptr};

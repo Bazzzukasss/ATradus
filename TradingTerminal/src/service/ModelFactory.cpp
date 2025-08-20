@@ -1,16 +1,16 @@
-#include "ModelFactory.h"
+#include "src/service/ModelFactory.h"
 #include "src/model/ArbitageNodeModel.h"
 #include "src/model/ApplicationModel.h"
 #include "src/model/NodeListModel.h"
-#include "../RequesterLib/src/Builder.h"
+#include "../RequesterLib/src/interface/IBuilder.h"
 #include "../RequesterLib/src/interface/IRequester.h"
 
 namespace atradus
 {
 
-ModelFactory::ModelFactory(QObject* parent)
+ModelFactory::ModelFactory(std::unique_ptr<rqs::IBuilder> builder, QObject* parent)
     : IModelFactory(parent)
-    , m_builder(std::make_unique<rqs::Builder>())
+    , m_builder(std::move(builder))
 {
 }
 
@@ -30,7 +30,7 @@ INodeModel* ModelFactory::createNodeModel(const NodeType& nodeType, const Market
 
 IApplicationModel* ModelFactory::createApplicationModel(QObject* parent)
 {
-    return new ApplicationModel(parent);
+    return new ApplicationModel(this, parent);
 }
 
 INodeListModel* ModelFactory::createNodeListModel(QObject* parent)

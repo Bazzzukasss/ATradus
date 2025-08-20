@@ -10,12 +10,16 @@ class IApplicationModel;
 class INodeView;
 class IViewFactory;
 class INodeListView;
+class INodeModel;
 
 class ApplicationView : public IApplicationView
 {
     Q_OBJECT
 public:
     explicit ApplicationView(IApplicationModel* model, IViewFactory* factory, QWidget* parent = nullptr);
+
+private:
+    void onNodeSelected(INodeModel* nodeModel);
 
 private:
     IApplicationModel* m_model{nullptr};

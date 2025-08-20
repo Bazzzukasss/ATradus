@@ -2,6 +2,7 @@
 #define IARBITRAGENODEMODEL_H
 
 #include "src/interface/INodeModel.h"
+#include "../RequesterLib/src/common/Common.h"
 
 namespace atradus
 {
@@ -18,9 +19,11 @@ public:
     virtual ~IArbitrageNodeModel() = default;
 
     virtual const QStringList& log() const = 0;
+    virtual void setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies) = 0;
 
 signals:
-    void logChanged(const QStringList& info);
+    void logChanged(const QStringList& log);
+    void logUpdated(const QString& info);
 };
 
 } // namespace atradus

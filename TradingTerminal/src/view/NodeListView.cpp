@@ -9,8 +9,10 @@ NodeListView::NodeListView(INodeListModel* model, QWidget* parent)
     : INodeListView(parent)
 {
     setModel(model);
+    setSelectionMode(SelectionMode::SingleSelection);
+    setSelectionBehavior(SelectionBehavior::SelectRows);
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    horizontalHeader()->hide();
+    horizontalHeader()->hide();    
 }
 
 } // namespace atradus

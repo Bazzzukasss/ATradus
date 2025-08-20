@@ -1,5 +1,8 @@
 #include "ArbitageNodeModel.h"
 #include "../RequesterLib/src/interface/IRequester.h"
+#include "../RequesterLib/src/common/Common.h"
+#include "../RequesterLib/src/common/Utils.h"
+#include "src/common/Utils.h"
 #include <QDebug>
 
 namespace atradus
@@ -13,11 +16,42 @@ ArbitageNodeModel::ArbitageNodeModel(std::unique_ptr<rqs::IRequester> requester,
     updateInfo();
 }
 
-void atradus::ArbitageNodeModel::run()
+bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
+                                const std::map<rqs::CurrencyPair, double>& prices)
 {
     static int i{0};
-    QString info{"Request: " + QString::number(i++)};
+    QString info;
+
+    info = QString("%1)").arg(i);
+    for(const auto& [curPair, price] : prices)
+    {
+        info += QString("\t[%1, %2] = %3")
+                    .arg(rqs::utils::toString(curPair.first))
+                    .arg(rqs::utils::toString(curPair.second))
+                    .arg(price);
+
+    }
+
     toLog(info);
+    i++;
+
+    return true;
+}
+
+void ArbitageNodeModel::run()
+{
+    for( const auto& currencyTrinity : m_requestedCurrencies)
+    {
+        m_requester->requestPrices({
+                                    currencyTrinity.c1_cb,
+                                    currencyTrinity.c2_cb,
+                                    currencyTrinity.c1_c2
+                                   },
+                                [=](const std::map<rqs::CurrencyPair, double>& prices){
+                                       process(currencyTrinity, prices);
+                                });
+    }
+
 }
 
 void ArbitageNodeModel::timerEvent(QTimerEvent* event)
@@ -38,7 +72,7 @@ NodeType ArbitageNodeModel::type() const
 void ArbitageNodeModel::updateInfo()
 {
     QStringList info;
-    info << "Arbitrage";
+    info << QString::fromStdString(utils::toString(type()));
     info << "request data";
     info << QString(m_isActive ? "Active" : "Not active");
 
@@ -64,11 +98,17 @@ const QStringList& ArbitageNodeModel::log() const
     return m_log;
 }
 
+void ArbitageNodeModel::setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies)
+{
+    m_requestedCurrencies = currencies;
+}
+
 void ArbitageNodeModel::toLog(const QString& info)
 {
     m_log << info;
     qDebug() << info;
     emit logChanged(m_log);
+    emit logUpdated(info);
 }
 
 bool ArbitageNodeModel::isActive() const
@@ -108,11 +148,6 @@ void ArbitageNodeModel::stop()
 {
     setIsActive(false);
     updateInfo();
-}
-
-bool atradus::ArbitageNodeModel::process(const std::map<rqs::CurrencyPair, double> &prices)
-{
-    return true;
 }
 
 } // namespace atradus

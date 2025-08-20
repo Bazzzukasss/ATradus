@@ -29,12 +29,13 @@ public:
     void stop() override;
 
     const QStringList& log() const override;
+    void setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies) override;
 
 protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    bool process(const std::map<rqs::CurrencyPair, double>& prices);
+    bool process(const rqs::CurrencyTrinity& currencyTrinity, const std::map<rqs::CurrencyPair, double>& prices);
     void setIsActive(bool isActive);
     void setInfo(const QStringList& info);
     void updateInfo();
@@ -45,6 +46,7 @@ private:
     QStringList m_info;
     QStringList m_log;
     bool m_isActive{false};
+    QVector<rqs::CurrencyTrinity> m_requestedCurrencies;
 };
 
 } //namespace atradus
