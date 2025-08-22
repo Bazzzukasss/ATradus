@@ -20,29 +20,37 @@ bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
                                 const std::map<rqs::CurrencyPair, double>& prices)
 {
     static int i{0};
-    QString info;
+    QString info, info_c1_cb, info_c2_cb, info_c2_c1;
     double volume_usdt{1000};
     double price_c1_cb, price_c2_cb, price_c2_c1;
 
     info = QString("%1)").arg(i);
+
     for(const auto& [curPair, price] : prices)
     {
-        info += QString("\t[%1, %2] = %3")
-                    .arg(rqs::utils::toString(curPair.first))
-                    .arg(rqs::utils::toString(curPair.second))
-                    .arg(price);
-
         if (curPair == currencyTrinity.c1_cb)
         {
             price_c1_cb = price;
+            info_c1_cb = QString("\t[%1, %2] = %3")
+                        .arg(rqs::utils::toString(curPair.first))
+                        .arg(rqs::utils::toString(curPair.second))
+                        .arg(price);
         }
         else if (curPair == currencyTrinity.c2_cb)
         {
             price_c2_cb = price;
+            info_c2_cb = QString("\t[%1, %2] = %3")
+                             .arg(rqs::utils::toString(curPair.first))
+                             .arg(rqs::utils::toString(curPair.second))
+                             .arg(price);
         }
         else if (curPair == currencyTrinity.c2_c1)
         {
             price_c2_c1 = price;
+            info_c2_c1 = QString("\t[%1, %2] = %3")
+                             .arg(rqs::utils::toString(curPair.first))
+                             .arg(rqs::utils::toString(curPair.second))
+                             .arg(price);
         }
     }
 
@@ -51,6 +59,7 @@ bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
     auto volume_cb = utils::calculateCurrencyVolume(1.0 / price_c2_cb, volume_c2, m_account.commision_prs);
     auto delta = volume_cb - volume_usdt;
 
+    info += info_c1_cb + info_c2_cb +info_c2_c1;
     info += QString("\tRESULT = %1, %2, %3\t%4")
                 .arg(volume_c1)
                 .arg(volume_c2)
