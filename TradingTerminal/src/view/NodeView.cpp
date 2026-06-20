@@ -3,6 +3,8 @@
 #include "src/interface/INodeModel.h"
 #include "src/interface/IArbitrageNodeModel.h"
 #include "src/interface/IArbitrageNodeView.h"
+#include "src/interface/ITriangleArbitrageNodeModel.h"
+#include "src/interface/ITriangleArbitrageNodeView.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
@@ -80,6 +82,9 @@ QWidget* NodeView::createView(INodeModel* model)
     {
     case NodeType::Arbitrage:
         return m_factory->createArbitrageNodeView(dynamic_cast<IArbitrageNodeModel*>(model), this);
+        break;
+    case NodeType::TriangleArbitrage:
+        return m_factory->createTriangleArbitrageNodeView(dynamic_cast<ITriangleArbitrageNodeModel*>(model), this);
         break;
     default:
         break;

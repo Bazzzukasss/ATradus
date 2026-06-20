@@ -10,6 +10,7 @@ class INodeModel;
 class IModelFactory;
 class INodeListModel;
 class IArbitrageNodeModel;
+class ITriangleArbitrageNodeModel;
 
 class ApplicationModel : public IApplicationModel
 {
@@ -18,6 +19,7 @@ public:
     ApplicationModel(IModelFactory* factory, QObject* parent = nullptr);
 
     IArbitrageNodeModel* addArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies) override;
+    ITriangleArbitrageNodeModel* addTriangleArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies) override;
     INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) override;
     INodeListModel* nodeListModel() const override;
     void setMarketAccount(const rqs::MarketAccount& account) override;

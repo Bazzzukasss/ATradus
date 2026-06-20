@@ -11,6 +11,7 @@ class INodeModel;
 class IApplicationModel;
 class INodeListModel;
 class IArbitrageNodeModel;
+class ITriangleArbitrageNodeModel;
 
 class IModelFactory : public QObject
 {
@@ -25,6 +26,7 @@ public:
     virtual IApplicationModel* createApplicationModel(QObject* parent = nullptr) = 0;
     virtual INodeListModel* createNodeListModel(QObject* parent = nullptr) = 0;
     virtual IArbitrageNodeModel* createArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) = 0;
+    virtual ITriangleArbitrageNodeModel* createTriangleArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) = 0;
 };
 
 } //namespace atradus

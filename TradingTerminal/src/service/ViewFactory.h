@@ -16,6 +16,7 @@ public:
     IApplicationView* createApplicationView(IApplicationModel* model, QWidget* parent) override;
     INodeListView* createNodeListView(INodeListModel* model, QWidget* parent) override;
     IArbitrageNodeView* createArbitrageNodeView(IArbitrageNodeModel* model, QWidget* parent) override;
+    ITriangleArbitrageNodeView* createTriangleArbitrageNodeView(ITriangleArbitrageNodeModel* model, QWidget* parent) override;
 };
 
 } // namespace atradus

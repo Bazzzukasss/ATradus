@@ -23,6 +23,7 @@ public:
     IApplicationModel* createApplicationModel(QObject* parent = nullptr) override;
     INodeListModel* createNodeListModel(QObject* parent = nullptr) override;
     IArbitrageNodeModel* createArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) override;
+    ITriangleArbitrageNodeModel* createTriangleArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) override;
 
 private:
     std::unique_ptr<rqs::IRequester> createRequester(const MarketType& marketType) const;

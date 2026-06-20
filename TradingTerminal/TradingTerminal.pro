@@ -11,21 +11,25 @@ HEADERS += \
     src/interface/IApplicationView.h \
     src/interface/IArbitrageNodeModel.h \
     src/interface/IArbitrageNodeView.h \
+    src/interface/ITriangleArbitrageNodeModel.h \
+    src/interface/ITriangleArbitrageNodeView.h \
     src/interface/INodeListModel.h \
     src/interface/INodeListView.h \
     src/interface/INodeView.h \
     src/interface/IViewFactory.h \
-    src/model/ApplicationModel.h \
-    src/model/ArbitageNodeModel.h \
-    src/model/NodeListModel.h \
-    src/service/ModelFactory.h \
-    src/common/Common.h \
     src/interface/IApplicationModel.h \
     src/interface/IModelFactory.h \
     src/interface/INodeModel.h \
+    src/model/ApplicationModel.h \
+    src/model/ArbitageNodeModel.h \
+    src/model/TriangleArbitrageNodeModel.h \
+    src/model/NodeListModel.h \
+    src/common/Common.h \
+    src/service/ModelFactory.h \    
     src/service/ViewFactory.h \
     src/view/ApplicationView.h \
     src/view/ArbitrageNodeView.h \
+    src/view/TriangleArbitrageNodeView.h \
     src/view/NodeListView.h \
     src/view/NodeView.h
 
@@ -34,12 +38,14 @@ SOURCES += \
     src/common/Utils.cpp \
     src/model/ApplicationModel.cpp \
     src/model/ArbitageNodeModel.cpp \
+    src/model/TriangleArbitrageNodeModel.cpp \
     src/model/NodeListModel.cpp \
     src/service/ModelFactory.cpp \
     src/main.cpp \
     src/service/ViewFactory.cpp \
     src/view/ApplicationView.cpp \
     src/view/ArbitrageNodeView.cpp \
+    src/view/TriangleArbitrageNodeView.cpp \
     src/view/NodeListView.cpp \
     src/view/NodeView.cpp
 

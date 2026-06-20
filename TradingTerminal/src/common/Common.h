@@ -7,7 +7,8 @@ namespace atradus
 enum class NodeType
 {
     Unknown,
-    Arbitrage
+    Arbitrage,
+    TriangleArbitrage
 };
 
 enum class MarketType

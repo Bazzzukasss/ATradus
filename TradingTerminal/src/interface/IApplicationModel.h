@@ -11,6 +11,7 @@ namespace atradus
 class INodeListModel;
 class INodeModel;
 class IArbitrageNodeModel;
+class ITriangleArbitrageNodeModel;
 
 class IApplicationModel : public QObject
 {
@@ -24,6 +25,7 @@ public:
     virtual ~IApplicationModel() = default;
 
     virtual IArbitrageNodeModel* addArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies = {}) = 0;
+    virtual ITriangleArbitrageNodeModel* addTriangleArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies = {}) = 0;
     virtual INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) = 0;
     virtual INodeListModel* nodeListModel() const = 0;
     virtual void setMarketAccount(const rqs::MarketAccount& account) = 0;

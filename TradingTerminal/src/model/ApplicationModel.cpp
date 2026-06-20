@@ -3,6 +3,7 @@
 #include "src/interface/IModelFactory.h"
 #include "src/interface/INodeModel.h"
 #include "src/interface/IArbitrageNodeModel.h"
+#include "src/interface/ITriangleArbitrageNodeModel.h"
 
 namespace atradus
 {
@@ -18,6 +19,16 @@ IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const MarketType& market
                                                         const QVector<rqs::CurrencyTrinity>& currencies)
 {
     auto nodeModel = m_factory->createArbitrageNodeModel(marketType, this);
+    nodeModel->setRequestedCurrencies(currencies);
+    addNode(nodeModel);
+
+    return nodeModel;
+}
+
+ITriangleArbitrageNodeModel* ApplicationModel::addTriangleArbitrageNode(const MarketType& marketType,
+                                                                        const QVector<rqs::CurrencyTrinity>& currencies)
+{
+    auto nodeModel = m_factory->createTriangleArbitrageNodeModel(marketType, this);
     nodeModel->setRequestedCurrencies(currencies);
     addNode(nodeModel);
 

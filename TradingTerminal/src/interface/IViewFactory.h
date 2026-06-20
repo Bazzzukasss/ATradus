@@ -15,6 +15,8 @@ class INodeListView;
 class INodeListModel;
 class IArbitrageNodeModel;
 class IArbitrageNodeView;
+class ITriangleArbitrageNodeModel;
+class ITriangleArbitrageNodeView;
 
 class IViewFactory : public QObject
 {
@@ -29,6 +31,7 @@ public:
     virtual IApplicationView* createApplicationView(IApplicationModel* model, QWidget* parent) = 0;
     virtual INodeListView* createNodeListView(INodeListModel* model, QWidget* parent) = 0;
     virtual IArbitrageNodeView* createArbitrageNodeView(IArbitrageNodeModel* model, QWidget* parent) = 0;
+    virtual ITriangleArbitrageNodeView* createTriangleArbitrageNodeView(ITriangleArbitrageNodeModel* model, QWidget* parent) = 0;
 };
 
 } //namespace atradus

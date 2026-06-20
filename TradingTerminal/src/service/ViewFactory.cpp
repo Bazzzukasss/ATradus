@@ -1,6 +1,7 @@
 #include "src/service/ViewFactory.h"
 #include "src/view/ApplicationView.h"
 #include "src/view/ArbitrageNodeView.h"
+#include "src/view/TriangleArbitrageNodeView.h"
 #include "src/view/NodeView.h"
 #include "src/view/NodeListView.h"
 
@@ -31,4 +32,8 @@ IArbitrageNodeView* ViewFactory::createArbitrageNodeView(IArbitrageNodeModel* mo
     return new ArbitrageNodeView(model, parent);
 }
 
+ITriangleArbitrageNodeView* ViewFactory::createTriangleArbitrageNodeView(ITriangleArbitrageNodeModel* model, QWidget* parent)
+{
+    return new TriangleArbitrageNodeView(model, parent);
+}
 } // namespace atradus

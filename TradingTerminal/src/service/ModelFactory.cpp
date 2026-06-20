@@ -1,5 +1,6 @@
 #include "src/service/ModelFactory.h"
 #include "src/model/ArbitageNodeModel.h"
+#include "src/model/TriangleArbitrageNodeModel.h"
 #include "src/model/ApplicationModel.h"
 #include "src/model/NodeListModel.h"
 #include "../RequesterLib/src/interface/IBuilder.h"
@@ -20,6 +21,9 @@ INodeModel* ModelFactory::createNodeModel(const NodeType& nodeType, const Market
     {
         case NodeType::Arbitrage:
             return createArbitrageNodeModel(marketType, parent);
+            break;
+        case NodeType::TriangleArbitrage:
+            return createTriangleArbitrageNodeModel(marketType, parent);
             break;
         default:
             break;
@@ -42,7 +46,14 @@ IArbitrageNodeModel* ModelFactory::createArbitrageNodeModel(const MarketType& ma
 {
     auto requester = createRequester(marketType);
 
-    return new ArbitageNodeModel(std::move(requester), this);
+    return new ArbitageNodeModel(std::move(requester), parent);
+}
+
+ITriangleArbitrageNodeModel* ModelFactory::createTriangleArbitrageNodeModel(const MarketType& marketType, QObject* parent)
+{
+    auto requester = createRequester(marketType);
+
+    return new TriangleArbitrageNodeModel(std::move(requester), parent);
 }
 
 std::unique_ptr<rqs::IRequester> ModelFactory::createRequester(const MarketType& marketType) const

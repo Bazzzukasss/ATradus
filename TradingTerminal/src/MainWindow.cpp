@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget* parent)
     auto modelFactory = new ModelFactory(std::move(builder), this);
 
     auto appModel = modelFactory->createApplicationModel(this);
-    appModel->addArbitrageNode(MarketType::Binance, ArbitrageTrinities);
+    appModel->addTriangleArbitrageNode(MarketType::Binance, ArbitrageTrinities);
 
     auto appView = viewFactory->createApplicationView(appModel, this);
 
