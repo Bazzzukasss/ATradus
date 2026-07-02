@@ -24,11 +24,9 @@ public:
 
     virtual ~IApplicationModel() = default;
 
-    virtual IArbitrageNodeModel* addArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies = {}) = 0;
-    virtual ITriangleArbitrageNodeModel* addTriangleArbitrageNode(const MarketType& marketType, const QVector<rqs::CurrencyTrinity>& currencies = {}) = 0;
-    virtual INodeModel* addNode(const NodeType& nodeType, const MarketType& marketType) = 0;
+    virtual IArbitrageNodeModel* addArbitrageNode(const std::vector<MarketType>& marketTypes, const std::vector<rqs::CurrencyPair>& currencies, const std::vector<rqs::MarketAccount>& marketAccounts) = 0;
+    virtual ITriangleArbitrageNodeModel* addTriangleArbitrageNode(const MarketType& marketType, const std::vector<rqs::CurrencyTrinity>& currencies, const rqs::MarketAccount& marketAccount) = 0;
     virtual INodeListModel* nodeListModel() const = 0;
-    virtual void setMarketAccount(const rqs::MarketAccount& account) = 0;
     virtual void selectNode(int i) = 0;
     virtual INodeModel* selectedNode() const = 0;
 

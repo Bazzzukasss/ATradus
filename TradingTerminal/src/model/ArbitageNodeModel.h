@@ -17,7 +17,7 @@ class ArbitageNodeModel : public IArbitrageNodeModel
 {
     Q_OBJECT
 public:
-    ArbitageNodeModel(std::unique_ptr<rqs::IRequester> requester,
+    ArbitageNodeModel(const std::vector<std::shared_ptr<rqs::IRequester>>& requesters,
                       QObject* parent = nullptr);
 
     NodeType type() const override;
@@ -29,26 +29,28 @@ public:
     void stop() override;
 
     const QStringList& log() const override;
-    void setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies) override;
-    void setMarketAccount(const rqs::MarketAccount& account) override;
+    void setRequestedCurrencies(const std::vector<rqs::CurrencyPair>& currencies) override;
+    void setMarketAccounts(const std::vector<rqs::MarketAccount>& accounts) override;
 
 protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    bool process(const rqs::CurrencyTrinity& currencyTrinity, const std::map<rqs::CurrencyPair, double>& prices);
+    bool process();
     void setIsActive(bool isActive);
     void setInfo(const QStringList& info);
     void updateInfo();
     void toLog(const QString& info);
 
 private:
-    std::unique_ptr<rqs::IRequester> m_requester{nullptr};
+    std::vector<std::shared_ptr<rqs::IRequester>> m_requesters;
     QStringList m_info;
     QStringList m_log;
     bool m_isActive{false};
-    QVector<rqs::CurrencyTrinity> m_requestedCurrencies;
-    rqs::MarketAccount m_account;
+    std::vector<rqs::CurrencyPair> m_requestedCurrencies;
+    std::vector<rqs::MarketAccount> m_accounts;
+
+    std::map<int, std::map<rqs::CurrencyPair, double>> m_marketsPrices;
 };
 
 } //namespace atradus

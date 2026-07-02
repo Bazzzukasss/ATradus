@@ -22,10 +22,10 @@ public:
 
     virtual ~IModelFactory() = default;
 
-    virtual INodeModel* createNodeModel(const NodeType& nodeType, const MarketType& marketType, QObject* parent = nullptr) = 0;
+    //virtual INodeModel* createNodeModel(const NodeType& nodeType, const MarketType& marketType, QObject* parent = nullptr) = 0;
     virtual IApplicationModel* createApplicationModel(QObject* parent = nullptr) = 0;
     virtual INodeListModel* createNodeListModel(QObject* parent = nullptr) = 0;
-    virtual IArbitrageNodeModel* createArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) = 0;
+    virtual IArbitrageNodeModel* createArbitrageNodeModel(const std::vector<MarketType>& marketTypes, QObject* parent = nullptr) = 0;
     virtual ITriangleArbitrageNodeModel* createTriangleArbitrageNodeModel(const MarketType& marketType, QObject* parent = nullptr) = 0;
 };
 

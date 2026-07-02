@@ -15,6 +15,7 @@ ModelFactory::ModelFactory(std::unique_ptr<rqs::IBuilder> builder, QObject* pare
 {
 }
 
+/*
 INodeModel* ModelFactory::createNodeModel(const NodeType& nodeType, const MarketType& marketType, QObject* parent)
 {
     switch(nodeType)
@@ -31,7 +32,7 @@ INodeModel* ModelFactory::createNodeModel(const NodeType& nodeType, const Market
 
     return nullptr;
 }
-
+*/
 IApplicationModel* ModelFactory::createApplicationModel(QObject* parent)
 {
     return new ApplicationModel(this, parent);
@@ -42,11 +43,17 @@ INodeListModel* ModelFactory::createNodeListModel(QObject* parent)
     return new NodeListModel(parent);
 }
 
-IArbitrageNodeModel* ModelFactory::createArbitrageNodeModel(const MarketType& marketType, QObject* parent)
+IArbitrageNodeModel* ModelFactory::createArbitrageNodeModel(const std::vector<MarketType>& marketTypes, QObject* parent)
 {
-    auto requester = createRequester(marketType);
+    std::vector<std::shared_ptr<rqs::IRequester>> requesters;
+    for(const auto& marketType : marketTypes)
+    {
+        auto requester = createRequester(marketType);
+        requesters.push_back(requester);
+    }
 
-    return new ArbitageNodeModel(std::move(requester), parent);
+
+    return new ArbitageNodeModel(requesters, parent);
 }
 
 ITriangleArbitrageNodeModel* ModelFactory::createTriangleArbitrageNodeModel(const MarketType& marketType, QObject* parent)
@@ -56,13 +63,16 @@ ITriangleArbitrageNodeModel* ModelFactory::createTriangleArbitrageNodeModel(cons
     return new TriangleArbitrageNodeModel(std::move(requester), parent);
 }
 
-std::unique_ptr<rqs::IRequester> ModelFactory::createRequester(const MarketType& marketType) const
+std::shared_ptr<rqs::IRequester> ModelFactory::createRequester(const MarketType& marketType) const
 {
-    std::unique_ptr<rqs::IRequester> requester;
+    std::shared_ptr<rqs::IRequester> requester;
 
     switch(marketType)
     {
     case MarketType::Binance:
+        requester = m_builder->binanceRequester();
+        break;
+    case MarketType::ByBit:
         requester = m_builder->binanceRequester();
         break;
     default:

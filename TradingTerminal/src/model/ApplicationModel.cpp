@@ -15,29 +15,25 @@ ApplicationModel::ApplicationModel(IModelFactory* factory, QObject* parent)
     m_nodeListModel = m_factory->createNodeListModel();
 }
 
-IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const MarketType& marketType,
-                                                        const QVector<rqs::CurrencyTrinity>& currencies)
+IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const std::vector<MarketType>& marketTypes,
+                                                        const std::vector<rqs::CurrencyPair>& currencies,
+                                                        const std::vector<rqs::MarketAccount>& marketAccounts)
 {
-    auto nodeModel = m_factory->createArbitrageNodeModel(marketType, this);
+    auto nodeModel = m_factory->createArbitrageNodeModel(marketTypes, this);
     nodeModel->setRequestedCurrencies(currencies);
+    nodeModel->setMarketAccounts(marketAccounts);
     addNode(nodeModel);
 
     return nodeModel;
 }
 
 ITriangleArbitrageNodeModel* ApplicationModel::addTriangleArbitrageNode(const MarketType& marketType,
-                                                                        const QVector<rqs::CurrencyTrinity>& currencies)
+                                                                        const std::vector<rqs::CurrencyTrinity>& currencies,
+                                                                        const rqs::MarketAccount& marketAccount)
 {
     auto nodeModel = m_factory->createTriangleArbitrageNodeModel(marketType, this);
     nodeModel->setRequestedCurrencies(currencies);
-    addNode(nodeModel);
-
-    return nodeModel;
-}
-
-INodeModel* ApplicationModel::addNode(const NodeType& nodeType, const MarketType& marketType)
-{
-    auto nodeModel = m_factory->createNodeModel(nodeType, marketType, this);
+    nodeModel->setMarketAccount(marketAccount);
     addNode(nodeModel);
 
     return nodeModel;
@@ -64,20 +60,8 @@ INodeModel* ApplicationModel::selectedNode() const
     return m_selectedNode;
 }
 
-void ApplicationModel::setMarketAccount(const rqs::MarketAccount& account)
-{
-    m_account = account;
-
-    for(int i = 0 ; i < m_nodeListModel->rowCount(); ++i)
-    {
-        auto nodeModel = m_nodeListModel->getNode(i);
-        nodeModel->setMarketAccount(account);
-    }
-}
-
 void ApplicationModel::addNode(INodeModel* nodeModel)
 {
-    nodeModel->setMarketAccount(m_account);
     m_nodeListModel->addNode(nodeModel);
 }
 

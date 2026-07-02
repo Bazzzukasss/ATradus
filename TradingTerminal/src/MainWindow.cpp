@@ -9,6 +9,8 @@
 namespace atradus
 {
 const rqs::MarketAccount BinanceTestAccount{"https://testnet.binance.vision", "", "", 0.075};
+const rqs::MarketAccount ByBitTestAccount{"https://testnet.binance.vision", "", "", 0.075};
+
 const rqs::CurrencyTrinity SOLBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::SOL};
 const rqs::CurrencyTrinity ETHBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::ETH};
 const rqs::CurrencyTrinity LINKETH{rqs::CurrencyType::ETH, rqs::CurrencyType::LINK};
@@ -17,8 +19,23 @@ const rqs::CurrencyTrinity BNBBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::BNB
 const rqs::CurrencyTrinity BNBETH{rqs::CurrencyType::ETH, rqs::CurrencyType::BNB};
 const rqs::CurrencyTrinity BNBSOL{rqs::CurrencyType::BNB, rqs::CurrencyType::SOL};
 
-const QVector<rqs::CurrencyTrinity> ArbitrageTrinities {
+const std::vector<rqs::CurrencyTrinity> ArbitrageTrinities {
     BNBBTC, BNBETH, BNBSOL
+};
+
+const std::vector<rqs::CurrencyPair> ArbitrageCurencies {
+    {rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
+    {rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
+    {rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
+    {rqs::CurrencyType::LINK, rqs::CurrencyType::USDT}
+};
+
+const std::vector<MarketType> ArbitrageMarkets {
+    MarketType::Binance, MarketType::ByBit
+};
+
+const std::vector<rqs::MarketAccount> ArbitrageAccounts {
+   BinanceTestAccount, ByBitTestAccount
 };
 
 MainWindow::MainWindow(QWidget* parent)
@@ -29,7 +46,9 @@ MainWindow::MainWindow(QWidget* parent)
     auto modelFactory = new ModelFactory(std::move(builder), this);
 
     auto appModel = modelFactory->createApplicationModel(this);
-    appModel->addTriangleArbitrageNode(MarketType::Binance, ArbitrageTrinities);
+    appModel->addArbitrageNode(ArbitrageMarkets,
+                               ArbitrageCurencies,
+                               ArbitrageAccounts);
 
     auto appView = viewFactory->createApplicationView(appModel, this);
 
@@ -42,7 +61,6 @@ MainWindow::MainWindow(QWidget* parent)
     mainLayout->addWidget(appView);
 
     appModel->selectNode(0);
-    appModel->setMarketAccount(BinanceTestAccount);
     setMinimumSize({1200, 800});
 }
 

@@ -17,7 +17,7 @@ class TriangleArbitrageNodeModel : public ITriangleArbitrageNodeModel
 {
     Q_OBJECT
 public:
-    TriangleArbitrageNodeModel(std::unique_ptr<rqs::IRequester> requester,
+    TriangleArbitrageNodeModel(std::shared_ptr<rqs::IRequester> requester,
                       QObject* parent = nullptr);
 
     NodeType type() const override;
@@ -29,7 +29,7 @@ public:
     void stop() override;
 
     const QStringList& log() const override;
-    void setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies) override;
+    void setRequestedCurrencies(const std::vector<rqs::CurrencyTrinity>& currencies) override;
     void setMarketAccount(const rqs::MarketAccount& account) override;
 
 protected:
@@ -43,11 +43,11 @@ private:
     void toLog(const QString& info);
 
 private:
-    std::unique_ptr<rqs::IRequester> m_requester{nullptr};
+    std::shared_ptr<rqs::IRequester> m_requester{nullptr};
     QStringList m_info;
     QStringList m_log;
     bool m_isActive{false};
-    QVector<rqs::CurrencyTrinity> m_requestedCurrencies;
+    std::vector<rqs::CurrencyTrinity> m_requestedCurrencies;
     rqs::MarketAccount m_account;
 };
 

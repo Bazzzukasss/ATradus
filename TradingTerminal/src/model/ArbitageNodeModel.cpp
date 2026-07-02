@@ -8,17 +8,35 @@
 namespace atradus
 {
 
-ArbitageNodeModel::ArbitageNodeModel(std::unique_ptr<rqs::IRequester> requester,
+ArbitageNodeModel::ArbitageNodeModel(const std::vector<std::shared_ptr<rqs::IRequester>>& requesters,
                                      QObject* parent)
     : IArbitrageNodeModel(parent)
-    , m_requester(std::move(requester))
+    , m_requesters(requesters)
 {
     updateInfo();
 }
 
-bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
-                                const std::map<rqs::CurrencyPair, double>& prices)
+bool ArbitageNodeModel::process()
 {
+    QString info("===============\n");
+
+    for(const auto& currency : m_requestedCurrencies)
+    {
+        QString currencyInfo =
+            QString("%1\t").arg(rqs::utils::toString(currency.first));
+
+        for(int i = 0; i < m_requesters.size(); ++i)
+        {
+            const auto& marketPrices = m_marketsPrices.at(i);
+            const auto& currencyPrice = marketPrices.at(currency);
+            currencyInfo += QString("%1\t").arg(currencyPrice);
+        }
+
+        info += currencyInfo + "\n";
+    }
+
+    toLog(info);
+    /*
     static int i{0};
     QString info, info_c1_cb, info_c2_cb, info_c2_c1;
     double volume_usdt{1000};
@@ -68,24 +86,26 @@ bool ArbitageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
 
     toLog(info);
     i++;
-
+*/
     return true;
 }
 
 void ArbitageNodeModel::run()
 {
-    for( const auto& currencyTrinity : m_requestedCurrencies)
+    int i{0};
+    m_marketsPrices.clear();
+    for(const auto& requester : m_requesters)
     {
-        m_requester->requestPrices({
-                                    currencyTrinity.c1_cb,
-                                    currencyTrinity.c2_cb,
-                                    currencyTrinity.c2_c1
-                                   },
+        requester->requestPrices(m_requestedCurrencies,
                                 [=](const std::map<rqs::CurrencyPair, double>& prices){
-                                       process(currencyTrinity, prices);
+                                     m_marketsPrices.insert({i, prices});
+                                     if (m_marketsPrices.size() == m_requesters.size())
+                                     {
+                                         process();
+                                     }
                                 });
+        i++;
     }
-
 }
 
 void ArbitageNodeModel::timerEvent(QTimerEvent* event)
@@ -132,15 +152,25 @@ const QStringList& ArbitageNodeModel::log() const
     return m_log;
 }
 
-void ArbitageNodeModel::setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies)
+void ArbitageNodeModel::setRequestedCurrencies(const std::vector<rqs::CurrencyPair>& currencies)
 {
     m_requestedCurrencies = currencies;
 }
 
-void ArbitageNodeModel::setMarketAccount(const rqs::MarketAccount& account)
+void ArbitageNodeModel::setMarketAccounts(const std::vector<rqs::MarketAccount>& accounts)
 {
-    m_account = account;
-    m_requester->setMarketAccount(account);
+    if (accounts.size() != m_requesters.size())
+    {
+        qDebug()<<"setMarketAccounts failed: accounts.size() != m_requesters.size()";
+        return;
+    }
+
+    m_accounts = accounts;
+    for(int i = 0; i < accounts.size(); ++i)
+    {
+        m_requesters.at(i)->setMarketAccount(accounts.at(i));
+    }
+
 }
 
 void ArbitageNodeModel::toLog(const QString& info)

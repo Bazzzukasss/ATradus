@@ -8,7 +8,7 @@
 namespace atradus
 {
 
-TriangleArbitrageNodeModel::TriangleArbitrageNodeModel(std::unique_ptr<rqs::IRequester> requester,
+TriangleArbitrageNodeModel::TriangleArbitrageNodeModel(std::shared_ptr<rqs::IRequester> requester,
                                                        QObject* parent)
     : ITriangleArbitrageNodeModel(parent)
     , m_requester(std::move(requester))
@@ -132,7 +132,7 @@ const QStringList& TriangleArbitrageNodeModel::log() const
     return m_log;
 }
 
-void TriangleArbitrageNodeModel::setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies)
+void TriangleArbitrageNodeModel::setRequestedCurrencies(const std::vector<rqs::CurrencyTrinity>& currencies)
 {
     m_requestedCurrencies = currencies;
 }

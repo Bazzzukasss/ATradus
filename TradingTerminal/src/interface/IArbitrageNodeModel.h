@@ -19,7 +19,8 @@ public:
     virtual ~IArbitrageNodeModel() = default;
 
     virtual const QStringList& log() const = 0;
-    virtual void setRequestedCurrencies(const QVector<rqs::CurrencyTrinity>& currencies) = 0;
+    virtual void setRequestedCurrencies(const std::vector<rqs::CurrencyPair>& currencies) = 0;
+    virtual void setMarketAccounts(const std::vector<rqs::MarketAccount>& accounts) = 0;
 
 signals:
     void logChanged(const QStringList& log);

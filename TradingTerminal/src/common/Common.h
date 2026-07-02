@@ -14,7 +14,8 @@ enum class NodeType
 enum class MarketType
 {
     Unknown,
-    Binance
+    Binance,
+    ByBit
 };
 
 } // namespace atradus
