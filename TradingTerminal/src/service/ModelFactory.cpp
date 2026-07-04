@@ -73,7 +73,7 @@ std::shared_ptr<rqs::IRequester> ModelFactory::createRequester(const MarketType&
         requester = m_builder->binanceRequester();
         break;
     case MarketType::ByBit:
-        requester = m_builder->binanceRequester();
+        requester = m_builder->bybitRequester();
         break;
     default:
         break;
