@@ -9,7 +9,9 @@
 namespace atradus
 {
 const rqs::MarketAccount BinanceTestAccount{"https://testnet.binance.vision", "", "", 0.075};
-const rqs::MarketAccount ByBitTestAccount{"https://testnet.binance.vision", "", "", 0.075};
+const rqs::MarketAccount ByBitTestAccount{"https://testnet.bybit.vision", "", "", 0.075};
+const rqs::MarketAccount BinanceAccount{"https://api.binance.com", "", "", 0.075};
+const rqs::MarketAccount ByBitAccount{"https://api.bybit.com", "", "", 0.075};
 
 const rqs::CurrencyTrinity SOLBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::SOL};
 const rqs::CurrencyTrinity ETHBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::ETH};
@@ -24,18 +26,22 @@ const std::vector<rqs::CurrencyTrinity> ArbitrageTrinities {
 };
 
 const std::vector<rqs::CurrencyPair> ArbitrageCurencies {
-    {rqs::CurrencyType::BTC, rqs::CurrencyType::USDT},
-    {rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
-    {rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
-    {rqs::CurrencyType::LINK, rqs::CurrencyType::USDT}
+    {rqs::CurrencyType::BTC, rqs::CurrencyType::USDT}
+    //{rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
+    //{rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
+    //{rqs::CurrencyType::LINK, rqs::CurrencyType::USDT}
 };
 
 const std::vector<MarketType> ArbitrageMarkets {
     MarketType::Binance, MarketType::ByBit
 };
 
-const std::vector<rqs::MarketAccount> ArbitrageAccounts {
+const std::vector<rqs::MarketAccount> ArbitrageTestAccounts {
    BinanceTestAccount, ByBitTestAccount
+};
+
+const std::vector<rqs::MarketAccount> ArbitrageAccounts {
+    BinanceAccount, ByBitAccount
 };
 
 MainWindow::MainWindow(QWidget* parent)
