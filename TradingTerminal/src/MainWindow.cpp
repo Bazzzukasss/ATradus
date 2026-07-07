@@ -13,20 +13,24 @@ const rqs::MarketAccount ByBitTestAccount{"https://testnet.bybit.vision", "", ""
 const rqs::MarketAccount BinanceAccount{"https://api.binance.com", "", "", 0.075};
 const rqs::MarketAccount ByBitAccount{"https://api.bybit.com", "", "", 0.075};
 
-const rqs::CurrencyTrinity SOLBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::SOL};
-const rqs::CurrencyTrinity ETHBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::ETH};
-const rqs::CurrencyTrinity LINKETH{rqs::CurrencyType::ETH, rqs::CurrencyType::LINK};
-const rqs::CurrencyTrinity LINKBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::LINK};
-const rqs::CurrencyTrinity BNBBTC{rqs::CurrencyType::BTC, rqs::CurrencyType::BNB};
-const rqs::CurrencyTrinity BNBETH{rqs::CurrencyType::ETH, rqs::CurrencyType::BNB};
-const rqs::CurrencyTrinity BNBSOL{rqs::CurrencyType::BNB, rqs::CurrencyType::SOL};
+const rqs::CurrencyTrinity SOLBTC{"BTC", "SOL", "USDT"};
+const rqs::CurrencyTrinity ETHBTC{"BTC", "ETH", "USDT"};
+const rqs::CurrencyTrinity LINKETH{"ETH", "LINK", "USDT"};
+const rqs::CurrencyTrinity LINKBTC{"BTC", "LINK", "USDT"};
+const rqs::CurrencyTrinity BNBBTC{"BTC", "BNB", "USDT"};
+const rqs::CurrencyTrinity BNBETH{"ETH", "BNB", "USDT"};
+const rqs::CurrencyTrinity BNBSOL{"BNB", "SOL", "USDT"};
 
 const std::vector<rqs::CurrencyTrinity> ArbitrageTrinities {
     BNBBTC, BNBETH, BNBSOL
 };
 
-const std::vector<rqs::CurrencyPair> ArbitrageCurencies {
-    {rqs::CurrencyType::BTC, rqs::CurrencyType::USDT}
+const std::vector<rqs::CurrencySymbol> ArbitrageCurencies {
+    "VANRYUSDT",
+    "BTCUSDT",
+    "ETHUSDT"
+    //{rqs::CurrencyType::VANRY, rqs::CurrencyType::USDT}
+    //{rqs::CurrencyType::BTC, rqs::CurrencyType::USDT}
     //{rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
     //{rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
     //{rqs::CurrencyType::LINK, rqs::CurrencyType::USDT}
@@ -34,10 +38,6 @@ const std::vector<rqs::CurrencyPair> ArbitrageCurencies {
 
 const std::vector<MarketType> ArbitrageMarkets {
     MarketType::Binance, MarketType::ByBit
-};
-
-const std::vector<rqs::MarketAccount> ArbitrageTestAccounts {
-   BinanceTestAccount, ByBitTestAccount
 };
 
 const std::vector<rqs::MarketAccount> ArbitrageAccounts {
@@ -55,6 +55,9 @@ MainWindow::MainWindow(QWidget* parent)
     appModel->addArbitrageNode(ArbitrageMarkets,
                                ArbitrageCurencies,
                                ArbitrageAccounts);
+    //appModel->addTriangleArbitrageNode(MarketType::Binance,
+    //                                   ArbitrageTrinities,
+    //                                   BinanceAccount);
 
     auto appView = viewFactory->createApplicationView(appModel, this);
 

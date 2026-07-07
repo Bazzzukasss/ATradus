@@ -19,7 +19,19 @@ ArbitageNodeModel::ArbitageNodeModel(const std::vector<std::shared_ptr<rqs::IReq
 bool ArbitageNodeModel::process()
 {
     QString info("===============\n");
+    for(int i = 0; i < m_requesters.size(); ++i)
+    {
+        QString currencyInfo = QString("MARKET %1\n----------\n").arg(i);
+        const auto& marketPrices = m_marketsPrices.at(i);
 
+        for(const auto& currencies : marketPrices)
+        {
+            currencyInfo += QString("%1 : %2\n").arg(currencies.first).arg(currencies.second);
+        }
+
+        info += currencyInfo + "\n";
+    }
+/*
     for(const auto& currency : m_requestedCurrencies)
     {
         QString currencyInfo =
@@ -34,59 +46,9 @@ bool ArbitageNodeModel::process()
 
         info += currencyInfo + "\n";
     }
-
-    toLog(info);
-    /*
-    static int i{0};
-    QString info, info_c1_cb, info_c2_cb, info_c2_c1;
-    double volume_usdt{1000};
-    double price_c1_cb, price_c2_cb, price_c2_c1;
-
-    info = QString("%1)").arg(i);
-
-    for(const auto& [curPair, price] : prices)
-    {
-        if (curPair == currencyTrinity.c1_cb)
-        {
-            price_c1_cb = price;
-            info_c1_cb = QString("\t[%1, %2] = %3")
-                        .arg(rqs::utils::toString(curPair.first))
-                        .arg(rqs::utils::toString(curPair.second))
-                        .arg(price);
-        }
-        else if (curPair == currencyTrinity.c2_cb)
-        {
-            price_c2_cb = price;
-            info_c2_cb = QString("\t[%1, %2] = %3")
-                             .arg(rqs::utils::toString(curPair.first))
-                             .arg(rqs::utils::toString(curPair.second))
-                             .arg(price);
-        }
-        else if (curPair == currencyTrinity.c2_c1)
-        {
-            price_c2_c1 = price;
-            info_c2_c1 = QString("\t[%1, %2] = %3")
-                             .arg(rqs::utils::toString(curPair.first))
-                             .arg(rqs::utils::toString(curPair.second))
-                             .arg(price);
-        }
-    }
-
-    auto volume_c1 = utils::calculateCurrencyVolume(price_c1_cb, volume_usdt, m_account.commision_prs);
-    auto volume_c2 = utils::calculateCurrencyVolume(price_c2_c1, volume_c1, m_account.commision_prs);
-    auto volume_cb = utils::calculateCurrencyVolume(1.0 / price_c2_cb, volume_c2, m_account.commision_prs);
-    auto delta = volume_cb - volume_usdt;
-
-    info += info_c1_cb + info_c2_cb +info_c2_c1;
-    info += QString("\tRESULT = %1, %2, %3\t%4")
-                .arg(volume_c1)
-                .arg(volume_c2)
-                .arg(volume_cb)
-                .arg(delta);
-
-    toLog(info);
-    i++;
 */
+    toLog(info);
+
     return true;
 }
 
@@ -97,8 +59,9 @@ void ArbitageNodeModel::run()
     for(const auto& requester : m_requesters)
     {
         requester->requestPrices(m_requestedCurrencies,
-                                [=](const std::map<rqs::CurrencyPair, double>& prices){
+                                [=](const std::map<rqs::CurrencySymbol, double>& prices){
                                      m_marketsPrices.insert({i, prices});
+                                     //qDebug()<<prices.size()<<m_marketsPrices.size()<< m_requesters.size();
                                      if (m_marketsPrices.size() == m_requesters.size())
                                      {
                                          process();
@@ -113,6 +76,7 @@ void ArbitageNodeModel::timerEvent(QTimerEvent* event)
     if (m_isActive)
     {
         run();
+        stop();
     }
 
     QObject::timerEvent(event);
@@ -152,7 +116,7 @@ const QStringList& ArbitageNodeModel::log() const
     return m_log;
 }
 
-void ArbitageNodeModel::setRequestedCurrencies(const std::vector<rqs::CurrencyPair>& currencies)
+void ArbitageNodeModel::setRequestedCurrencies(const std::vector<rqs::CurrencySymbol>& currencies)
 {
     m_requestedCurrencies = currencies;
 }

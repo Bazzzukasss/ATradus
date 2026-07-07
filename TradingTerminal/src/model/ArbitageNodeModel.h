@@ -29,7 +29,7 @@ public:
     void stop() override;
 
     const QStringList& log() const override;
-    void setRequestedCurrencies(const std::vector<rqs::CurrencyPair>& currencies) override;
+    void setRequestedCurrencies(const std::vector<rqs::CurrencySymbol>& currencies) override;
     void setMarketAccounts(const std::vector<rqs::MarketAccount>& accounts) override;
 
 protected:
@@ -47,10 +47,10 @@ private:
     QStringList m_info;
     QStringList m_log;
     bool m_isActive{false};
-    std::vector<rqs::CurrencyPair> m_requestedCurrencies;
+    std::vector<rqs::CurrencySymbol> m_requestedCurrencies;
     std::vector<rqs::MarketAccount> m_accounts;
 
-    std::map<int, std::map<rqs::CurrencyPair, double>> m_marketsPrices;
+    std::map<int, std::map<rqs::CurrencySymbol, double>> m_marketsPrices;
 };
 
 } //namespace atradus

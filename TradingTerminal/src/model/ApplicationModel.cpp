@@ -16,7 +16,7 @@ ApplicationModel::ApplicationModel(IModelFactory* factory, QObject* parent)
 }
 
 IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const std::vector<MarketType>& marketTypes,
-                                                        const std::vector<rqs::CurrencyPair>& currencies,
+                                                        const std::vector<rqs::CurrencySymbol>& currencies,
                                                         const std::vector<rqs::MarketAccount>& marketAccounts)
 {
     auto nodeModel = m_factory->createArbitrageNodeModel(marketTypes, this);

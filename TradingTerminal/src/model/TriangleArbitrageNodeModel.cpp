@@ -17,7 +17,7 @@ TriangleArbitrageNodeModel::TriangleArbitrageNodeModel(std::shared_ptr<rqs::IReq
 }
 
 bool TriangleArbitrageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
-                                         const std::map<rqs::CurrencyPair, double>& prices)
+                                         const std::map<rqs::CurrencySymbol, double>& prices)
 {
     static int i{0};
     QString info, info_c1_cb, info_c2_cb, info_c2_c1;
@@ -26,30 +26,27 @@ bool TriangleArbitrageNodeModel::process(const rqs::CurrencyTrinity& currencyTri
 
     info = QString("%1)").arg(i);
 
-    for(const auto& [curPair, price] : prices)
+    for(const auto& [curSymbol, price] : prices)
     {
-        if (curPair == currencyTrinity.c1_cb)
+        if (curSymbol == rqs::utils::toCurrencySymbol(currencyTrinity.c1_cb))
         {
             price_c1_cb = price;
-            info_c1_cb = QString("\t[%1, %2] = %3")
-                        .arg(rqs::utils::toString(curPair.first))
-                        .arg(rqs::utils::toString(curPair.second))
+            info_c1_cb = QString("\t[%1] = %3")
+                        .arg(curSymbol)
                         .arg(price);
         }
-        else if (curPair == currencyTrinity.c2_cb)
+        else if (curSymbol == rqs::utils::toCurrencySymbol(currencyTrinity.c2_cb))
         {
             price_c2_cb = price;
-            info_c2_cb = QString("\t[%1, %2] = %3")
-                             .arg(rqs::utils::toString(curPair.first))
-                             .arg(rqs::utils::toString(curPair.second))
+            info_c2_cb = QString("\t[%1] = %3")
+                             .arg(curSymbol)
                              .arg(price);
         }
-        else if (curPair == currencyTrinity.c2_c1)
+        else if (curSymbol == rqs::utils::toCurrencySymbol(currencyTrinity.c2_c1))
         {
             price_c2_c1 = price;
             info_c2_c1 = QString("\t[%1, %2] = %3")
-                             .arg(rqs::utils::toString(curPair.first))
-                             .arg(rqs::utils::toString(curPair.second))
+                             .arg(curSymbol)
                              .arg(price);
         }
     }
@@ -77,11 +74,11 @@ void TriangleArbitrageNodeModel::run()
     for( const auto& currencyTrinity : m_requestedCurrencies)
     {
         m_requester->requestPrices({
-                                    currencyTrinity.c1_cb,
-                                    currencyTrinity.c2_cb,
-                                    currencyTrinity.c2_c1
+                                    rqs::utils::toCurrencySymbol(currencyTrinity.c1_cb),
+                                    rqs::utils::toCurrencySymbol(currencyTrinity.c2_cb),
+                                    rqs::utils::toCurrencySymbol(currencyTrinity.c2_c1)
                                    },
-                                [=](const std::map<rqs::CurrencyPair, double>& prices){
+                                [=](const std::map<rqs::CurrencySymbol, double>& prices){
                                        process(currencyTrinity, prices);
                                 });
     }

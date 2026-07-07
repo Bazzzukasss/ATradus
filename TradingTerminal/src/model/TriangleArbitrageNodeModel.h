@@ -36,7 +36,7 @@ protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    bool process(const rqs::CurrencyTrinity& currencyTrinity, const std::map<rqs::CurrencyPair, double>& prices);
+    bool process(const rqs::CurrencyTrinity& currencyTrinity, const std::map<rqs::CurrencySymbol, double>& prices);
     void setIsActive(bool isActive);
     void setInfo(const QStringList& info);
     void updateInfo();
