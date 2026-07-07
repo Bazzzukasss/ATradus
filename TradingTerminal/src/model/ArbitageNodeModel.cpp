@@ -61,7 +61,6 @@ void ArbitageNodeModel::run()
         requester->requestPrices(m_requestedCurrencies,
                                 [=](const std::map<rqs::CurrencySymbol, double>& prices){
                                      m_marketsPrices.insert({i, prices});
-                                     //qDebug()<<prices.size()<<m_marketsPrices.size()<< m_requesters.size();
                                      if (m_marketsPrices.size() == m_requesters.size())
                                      {
                                          process();
