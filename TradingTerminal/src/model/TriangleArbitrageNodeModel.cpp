@@ -16,8 +16,8 @@ TriangleArbitrageNodeModel::TriangleArbitrageNodeModel(std::shared_ptr<rqs::IReq
     updateInfo();
 }
 
-bool TriangleArbitrageNodeModel::process(const rqs::CurrencyTrinity& currencyTrinity,
-                                         const std::map<rqs::CurrencySymbol, double>& prices)
+bool TriangleArbitrageNodeModel::process(const rqs::CoinTrinity& currencyTrinity,
+                                         const std::map<rqs::CoinSymbol, double>& prices)
 {
     static int i{0};
     QString info, info_c1_cb, info_c2_cb, info_c2_c1;
@@ -78,7 +78,7 @@ void TriangleArbitrageNodeModel::run()
                                     rqs::utils::toCurrencySymbol(currencyTrinity.c2_cb),
                                     rqs::utils::toCurrencySymbol(currencyTrinity.c2_c1)
                                    },
-                                [=](const std::map<rqs::CurrencySymbol, double>& prices){
+                                [=](const std::map<rqs::CoinSymbol, double>& prices){
                                        process(currencyTrinity, prices);
                                 });
     }
@@ -129,7 +129,7 @@ const QStringList& TriangleArbitrageNodeModel::log() const
     return m_log;
 }
 
-void TriangleArbitrageNodeModel::setRequestedCurrencies(const std::vector<rqs::CurrencyTrinity>& currencies)
+void TriangleArbitrageNodeModel::setRequestedCurrencies(const std::vector<rqs::CoinTrinity>& currencies)
 {
     m_requestedCurrencies = currencies;
 }

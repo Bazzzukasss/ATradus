@@ -19,7 +19,7 @@ public:
     virtual ~ITriangleArbitrageNodeModel() = default;
 
     virtual const QStringList& log() const = 0;
-    virtual void setRequestedCurrencies(const std::vector<rqs::CurrencyTrinity>& currencies) = 0;
+    virtual void setRequestedCurrencies(const std::vector<rqs::CoinTrinity>& currencies) = 0;
     virtual void setMarketAccount(const rqs::MarketAccount& account) = 0;
 
 signals:

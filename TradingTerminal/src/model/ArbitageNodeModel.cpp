@@ -59,7 +59,7 @@ void ArbitageNodeModel::run()
     for(const auto& requester : m_requesters)
     {
         requester->requestPrices(m_requestedCurrencies,
-                                [=](const std::map<rqs::CurrencySymbol, double>& prices){
+                                [=](const std::map<rqs::CoinSymbol, double>& prices){
                                      m_marketsPrices.insert({i, prices});
                                      if (m_marketsPrices.size() == m_requesters.size())
                                      {
@@ -115,7 +115,7 @@ const QStringList& ArbitageNodeModel::log() const
     return m_log;
 }
 
-void ArbitageNodeModel::setRequestedCurrencies(const std::vector<rqs::CurrencySymbol>& currencies)
+void ArbitageNodeModel::setRequestedCurrencies(const std::vector<rqs::CoinSymbol>& currencies)
 {
     m_requestedCurrencies = currencies;
 }

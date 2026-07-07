@@ -16,7 +16,7 @@ ApplicationModel::ApplicationModel(IModelFactory* factory, QObject* parent)
 }
 
 IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const std::vector<MarketType>& marketTypes,
-                                                        const std::vector<rqs::CurrencySymbol>& currencies,
+                                                        const std::vector<rqs::CoinSymbol>& currencies,
                                                         const std::vector<rqs::MarketAccount>& marketAccounts)
 {
     auto nodeModel = m_factory->createArbitrageNodeModel(marketTypes, this);
@@ -28,7 +28,7 @@ IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const std::vector<Market
 }
 
 ITriangleArbitrageNodeModel* ApplicationModel::addTriangleArbitrageNode(const MarketType& marketType,
-                                                                        const std::vector<rqs::CurrencyTrinity>& currencies,
+                                                                        const std::vector<rqs::CoinTrinity>& currencies,
                                                                         const rqs::MarketAccount& marketAccount)
 {
     auto nodeModel = m_factory->createTriangleArbitrageNodeModel(marketType, this);

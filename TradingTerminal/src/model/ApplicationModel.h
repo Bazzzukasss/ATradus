@@ -18,8 +18,8 @@ class ApplicationModel : public IApplicationModel
 public:
     ApplicationModel(IModelFactory* factory, QObject* parent = nullptr);
 
-    IArbitrageNodeModel* addArbitrageNode(const std::vector<MarketType>& marketTypes, const std::vector<rqs::CurrencySymbol>& currencies, const std::vector<rqs::MarketAccount> &marketAccounts) override;
-    ITriangleArbitrageNodeModel* addTriangleArbitrageNode(const MarketType& marketType, const std::vector<rqs::CurrencyTrinity>& currencies, const rqs::MarketAccount& marketAccount) override;
+    IArbitrageNodeModel* addArbitrageNode(const std::vector<MarketType>& marketTypes, const std::vector<rqs::CoinSymbol>& currencies, const std::vector<rqs::MarketAccount> &marketAccounts) override;
+    ITriangleArbitrageNodeModel* addTriangleArbitrageNode(const MarketType& marketType, const std::vector<rqs::CoinTrinity>& currencies, const rqs::MarketAccount& marketAccount) override;
     INodeListModel* nodeListModel() const override;
     void selectNode(int i) override;
     INodeModel* selectedNode() const override;

@@ -29,14 +29,14 @@ public:
     void stop() override;
 
     const QStringList& log() const override;
-    void setRequestedCurrencies(const std::vector<rqs::CurrencyTrinity>& currencies) override;
+    void setRequestedCurrencies(const std::vector<rqs::CoinTrinity>& currencies) override;
     void setMarketAccount(const rqs::MarketAccount& account) override;
 
 protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    bool process(const rqs::CurrencyTrinity& currencyTrinity, const std::map<rqs::CurrencySymbol, double>& prices);
+    bool process(const rqs::CoinTrinity& currencyTrinity, const std::map<rqs::CoinSymbol, double>& prices);
     void setIsActive(bool isActive);
     void setInfo(const QStringList& info);
     void updateInfo();
@@ -47,7 +47,7 @@ private:
     QStringList m_info;
     QStringList m_log;
     bool m_isActive{false};
-    std::vector<rqs::CurrencyTrinity> m_requestedCurrencies;
+    std::vector<rqs::CoinTrinity> m_requestedCurrencies;
     rqs::MarketAccount m_account;
 };
 

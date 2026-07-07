@@ -13,19 +13,19 @@ const rqs::MarketAccount ByBitTestAccount{"https://testnet.bybit.vision", "", ""
 const rqs::MarketAccount BinanceAccount{"https://api.binance.com", "", "", 0.075};
 const rqs::MarketAccount ByBitAccount{"https://api.bybit.com", "", "", 0.075};
 
-const rqs::CurrencyTrinity SOLBTC{"BTC", "SOL", "USDT"};
-const rqs::CurrencyTrinity ETHBTC{"BTC", "ETH", "USDT"};
-const rqs::CurrencyTrinity LINKETH{"ETH", "LINK", "USDT"};
-const rqs::CurrencyTrinity LINKBTC{"BTC", "LINK", "USDT"};
-const rqs::CurrencyTrinity BNBBTC{"BTC", "BNB", "USDT"};
-const rqs::CurrencyTrinity BNBETH{"ETH", "BNB", "USDT"};
-const rqs::CurrencyTrinity BNBSOL{"BNB", "SOL", "USDT"};
+const rqs::CoinTrinity SOLBTC{"BTC", "SOL", "USDT"};
+const rqs::CoinTrinity ETHBTC{"BTC", "ETH", "USDT"};
+const rqs::CoinTrinity LINKETH{"ETH", "LINK", "USDT"};
+const rqs::CoinTrinity LINKBTC{"BTC", "LINK", "USDT"};
+const rqs::CoinTrinity BNBBTC{"BTC", "BNB", "USDT"};
+const rqs::CoinTrinity BNBETH{"ETH", "BNB", "USDT"};
+const rqs::CoinTrinity BNBSOL{"BNB", "SOL", "USDT"};
 
-const std::vector<rqs::CurrencyTrinity> ArbitrageTrinities {
+const std::vector<rqs::CoinTrinity> ArbitrageTrinities {
     BNBBTC, BNBETH, BNBSOL
 };
 
-const std::vector<rqs::CurrencySymbol> ArbitrageCurencies {
+const std::vector<rqs::CoinSymbol> ArbitrageCurencies {
     "VANRYUSDT",
     "BTCUSDT",
     "ETHUSDT"
