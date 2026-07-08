@@ -22,6 +22,7 @@ IArbitrageNodeModel* ApplicationModel::addArbitrageNode(const std::vector<Market
     auto nodeModel = m_factory->createArbitrageNodeModel(marketTypes, this);
     nodeModel->setRequestedCurrencies(currencies);
     nodeModel->setMarketAccounts(marketAccounts);
+    nodeModel->setSpredRange(1, 50);
     addNode(nodeModel);
 
     return nodeModel;

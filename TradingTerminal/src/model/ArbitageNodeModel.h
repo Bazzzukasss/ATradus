@@ -31,6 +31,7 @@ public:
     const QStringList& log() const override;
     void setRequestedCurrencies(const std::vector<rqs::CoinSymbol>& currencies) override;
     void setMarketAccounts(const std::vector<rqs::MarketAccount>& accounts) override;
+    void setSpredRange(double minSpred, double maxSpred) override;
 
 protected:
     void timerEvent(QTimerEvent* event) override;
@@ -49,8 +50,10 @@ private:
     bool m_isActive{false};
     std::vector<rqs::CoinSymbol> m_requestedCurrencies;
     std::vector<rqs::MarketAccount> m_accounts;
-
     std::map<int, std::map<rqs::CoinSymbol, double>> m_marketsPrices;
+    int m_requestNumber{0};
+    double m_minSpred{0};
+    double m_maxSpred{1000};
 };
 
 } //namespace atradus

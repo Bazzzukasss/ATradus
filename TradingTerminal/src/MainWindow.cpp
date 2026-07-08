@@ -26,14 +26,9 @@ const std::vector<rqs::CoinTrinity> ArbitrageTrinities {
 };
 
 const std::vector<rqs::CoinSymbol> ArbitrageCurencies {
-    "VANRYUSDT",
-    "BTCUSDT",
-    "ETHUSDT"
-    //{rqs::CurrencyType::VANRY, rqs::CurrencyType::USDT}
-    //{rqs::CurrencyType::BTC, rqs::CurrencyType::USDT}
-    //{rqs::CurrencyType::ETH, rqs::CurrencyType::USDT},
-    //{rqs::CurrencyType::SOL, rqs::CurrencyType::USDT},
-    //{rqs::CurrencyType::LINK, rqs::CurrencyType::USDT}
+    //"VANRYUSDT",
+    //"BTCUSDT",
+    //"ETHUSDT"
 };
 
 const std::vector<MarketType> ArbitrageMarkets {

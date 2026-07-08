@@ -3,6 +3,7 @@
 #include "../RequesterLib/src/common/Common.h"
 #include "../RequesterLib/src/common/Utils.h"
 #include "src/common/Utils.h"
+#include <string>
 #include <QDebug>
 
 namespace atradus
@@ -18,38 +19,66 @@ ArbitageNodeModel::ArbitageNodeModel(const std::vector<std::shared_ptr<rqs::IReq
 
 bool ArbitageNodeModel::process()
 {
-    QString info("===============\n");
+    std::map<rqs::CoinSymbol, std::vector<double>> coinSymbolsPrices;
+
     for(int i = 0; i < m_requesters.size(); ++i)
     {
-        QString currencyInfo = QString("MARKET %1\n----------\n").arg(i);
+        //QString currencyInfo = QString("MARKET %1\n----------\n").arg(i);
         const auto& marketPrices = m_marketsPrices.at(i);
 
-        for(const auto& currencies : marketPrices)
+        for(const auto& [coinSymbol, price] : marketPrices)
         {
-            currencyInfo += QString("%1 : %2\n").arg(currencies.first).arg(currencies.second);
+            if (coinSymbol.find("USDT") != std::string::npos)
+            {
+                coinSymbolsPrices[coinSymbol].push_back(price);
+                //currencyInfo += QString("%1 : %2\n").arg(coinSymbol).arg(price);
+            }
         }
 
-        info += currencyInfo + "\n";
+        //info += currencyInfo + "\n";
     }
-/*
-    for(const auto& currency : m_requestedCurrencies)
+
+    QString info;
+    for(const auto& [coinSymbol, prices] : coinSymbolsPrices)
     {
-        QString currencyInfo =
-            QString("%1\t").arg(rqs::utils::toString(currency.first));
-
-        for(int i = 0; i < m_requesters.size(); ++i)
+        if (prices.size() < m_requesters.size())
         {
-            const auto& marketPrices = m_marketsPrices.at(i);
-            const auto& currencyPrice = marketPrices.at(currency);
-            currencyInfo += QString("%1\t").arg(currencyPrice);
+            continue;
         }
 
-        info += currencyInfo + "\n";
+        QString pricesInfo;
+        for(const auto& price : prices)
+        {
+            pricesInfo += QString("%1\t").arg(price);
+        }
+
+        auto p0 = prices.at(0);
+        auto p1 = prices.at(1);
+        auto spred_prs = abs(p0 - p1) * 100 / qMin(p0, p1) ;
+
+        if (spred_prs < m_minSpred || spred_prs > m_maxSpred)
+        {
+            continue;
+        }
+
+        info += QString("%1\t:\t%2\t[%3\%]\n").arg(coinSymbol).arg(pricesInfo).arg(spred_prs);
     }
-*/
-    toLog(info);
+
+    if (!info.isEmpty())
+    {
+        info = QString("[%1]========\n%2").arg(m_requestNumber).arg(info);
+        toLog(info);
+    }
+
+    m_requestNumber++;
 
     return true;
+}
+
+void ArbitageNodeModel::setSpredRange(double minSpred, double maxSpred)
+{
+    m_minSpred = minSpred;
+    m_maxSpred = maxSpred;
 }
 
 void ArbitageNodeModel::run()
@@ -75,7 +104,6 @@ void ArbitageNodeModel::timerEvent(QTimerEvent* event)
     if (m_isActive)
     {
         run();
-        stop();
     }
 
     QObject::timerEvent(event);
@@ -172,9 +200,10 @@ void ArbitageNodeModel::setIsActive(bool isActive)
 
 void ArbitageNodeModel::start()
 {
+    m_requestNumber = 0;
     setIsActive(true);
     updateInfo();
-    startTimer(1000);
+    startTimer(5000);
 }
 
 void ArbitageNodeModel::stop()
